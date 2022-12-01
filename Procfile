@@ -1,1 +1,1 @@
-web: mvn -Dserver.port=$PORT spring-boot:run
+web: mvn spring-boot:run
