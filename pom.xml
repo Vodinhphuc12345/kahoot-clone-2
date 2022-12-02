@@ -13,6 +13,7 @@
     <packaging>war</packaging>
     <version>0.0.1-SNAPSHOT</version>
     <name>kahootClone</name>
+
     <description>kahootClone</description>
     <properties>
         <java.version>11</java.version>
@@ -96,6 +97,8 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
+            <scope>runtime</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -148,6 +151,8 @@
             <version>1.33.0</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
+
 
     </dependencies>
 
@@ -177,6 +182,18 @@
                             <version>0.1.0</version>
                         </path>
                     </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>com.heroku.sdk</groupId>
+                <artifactId>heroku-maven-plugin</artifactId>
+                <version>0.3.6</version>
+                <configuration>
+                    <appName>possessed-cemetery-7933</appName>
                 </configuration>
             </plugin>
         </plugins>

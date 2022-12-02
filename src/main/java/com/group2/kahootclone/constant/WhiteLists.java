@@ -6,7 +6,9 @@ public class WhiteLists {
             "/swagger-ui.html",
             "/v2/api-docs",
             "/webjars/**",
-            "/swagger-ui/**"
+            "/swagger-ui/**",
+            "/**"
+
     };
     public static final String[] AUTH_WHITELIST = {
             "/api/v1/auth/login",
