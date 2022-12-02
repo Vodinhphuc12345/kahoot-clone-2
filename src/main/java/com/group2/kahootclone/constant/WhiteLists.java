@@ -7,7 +7,7 @@ public class WhiteLists {
             "/v2/api-docs",
             "/webjars/**",
             "/swagger-ui/**",
-            "/**"
+            "/.well-known/pki-validation/**"
 
     };
     public static final String[] AUTH_WHITELIST = {
