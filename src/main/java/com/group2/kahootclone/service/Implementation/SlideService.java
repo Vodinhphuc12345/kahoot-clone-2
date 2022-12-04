@@ -1,13 +1,16 @@
 package com.group2.kahootclone.service.Implementation;
 
+import com.group2.kahootclone.constant.ErrorCodes;
 import com.group2.kahootclone.mapper.SlideMapper;
-import com.group2.kahootclone.model.Presentation;
-import com.group2.kahootclone.model.Slide;
+import com.group2.kahootclone.model.*;
 import com.group2.kahootclone.object.Request.slideController.SlideRequest;
+import com.group2.kahootclone.object.Request.socket.RecordRequest;
 import com.group2.kahootclone.object.Response.slideController.SlideResponse;
 import com.group2.kahootclone.object.ResponseObject;
 import com.group2.kahootclone.reposibility.PresentationRepository;
+import com.group2.kahootclone.reposibility.RecordRepository;
 import com.group2.kahootclone.reposibility.SlideRepository;
+import com.group2.kahootclone.reposibility.UserRepository;
 import com.group2.kahootclone.service.Interface.ISlideService;
 import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.factory.Mappers;
@@ -24,7 +27,11 @@ public class SlideService implements ISlideService {
     @Autowired
     PresentationRepository presentationRepository;
     @Autowired
+    UserRepository userRepository;
+    @Autowired
     SlideRepository slideRepository;
+    @Autowired
+    RecordRepository recordRepository;
     @Override
     public ResponseObject<List<SlideResponse>> getSlidesOfPresentation(int presentationId) {
         ResponseObject<List<SlideResponse>> ret = new ResponseObject<>();
@@ -140,6 +147,81 @@ public class SlideService implements ISlideService {
             }
             //build success
             ret.setObject(SlideResponse.fromSlide(slide));
+        } catch (Exception exception) {
+            log.error(exception.getMessage(), exception);
+            ret.buildException(exception.getMessage());
+        }
+        return ret;
+    }
+
+    @Override
+    public ResponseObject<SlideResponse> presentSlide(int slideId) {
+        ResponseObject<SlideResponse> ret = new ResponseObject<>();
+        try {
+            //slide
+            Optional<Slide> slideRet = slideRepository.findById(slideId);
+            Slide slide = slideRet.orElse(null);
+
+            if (slide == null) {
+                ret.buildResourceNotFound("Slide not found.");
+                return ret;
+            }
+            //unPresent other slides
+            Presentation presentation = slide.getPresentation();
+            presentation.getSlides().forEach(s -> {
+                s.setPresenting(false);
+            });
+            presentationRepository.save(presentation);
+            //present
+            slide.setPresenting(true);
+            slideRepository.save(slide);
+            //build success
+            ret.setObject(SlideResponse.fromSlide(slide));
+        } catch (Exception exception) {
+            log.error(exception.getMessage(), exception);
+            ret.buildException(exception.getMessage());
+        }
+        return ret;
+    }
+
+    @Override
+    public ResponseObject<SlideResponse> saveRecord(RecordRequest request) {
+        ResponseObject<SlideResponse> ret = new ResponseObject<>();
+        try {
+            //check slide
+            Optional<Slide> slideRet = slideRepository.findById(request.getSlideId());
+            Slide slide = slideRet.orElse(null);
+
+            if (slide == null) {
+                ret.buildResourceNotFound("Slide not found.");
+                return ret;
+            }
+            //check user
+            Optional<User> userRet = userRepository.findById(request.getUserId());
+            User user = userRet.orElse(null);
+
+            if (user == null) {
+                ret.buildResourceNotFound("User not found.");
+                return ret;
+            }
+            //check existed record
+            RecordId recordId = new RecordId(user.getId(), slide.getId());
+            Record record = recordRepository.findByRecordId(recordId);
+
+            if (record != null) {
+                ret.setMessage("You already answered this question.");
+                ret.setErrorCode(ErrorCodes.EXISTED);
+                return ret;
+            }
+            //save record
+            Record requestRecord = Record
+                    .builder()
+                    .user(user)
+                    .slide(slide)
+                    .build();
+            Record savedRecord = recordRepository.save(requestRecord);
+            //build success
+            ret.setObject(SlideResponse.fromSlide(savedRecord.getSlide()));
         } catch (Exception exception) {
             log.error(exception.getMessage(), exception);
             ret.buildException(exception.getMessage());

@@ -149,7 +149,7 @@ public class KahootGroupService implements IKahootGroupService {
         ResponseObject<KahootGroupResponse> ret = new ResponseObject<>();
         try {
             Optional<User> userRet = userRepository.findById(request.getUserId());
-            User user = userRet.isEmpty() ? null : userRet.get();
+            User user = userRet.orElse(null);
 
             //build resource not found
             if (user == null) {
@@ -158,7 +158,7 @@ public class KahootGroupService implements IKahootGroupService {
             }
 
             Optional<KahootGroup> kahootGroupRet = kahootGroupRepository.findById(groupId);
-            KahootGroup kahootGroup = kahootGroupRet.isEmpty() ? null : kahootGroupRet.get();
+            KahootGroup kahootGroup = kahootGroupRet.orElse(null);
 
             //build resource not found
             if (kahootGroup == null) {

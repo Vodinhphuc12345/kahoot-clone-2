@@ -1,6 +1,7 @@
 package com.group2.kahootclone.service.Interface;
 
 import com.group2.kahootclone.object.Request.slideController.SlideRequest;
+import com.group2.kahootclone.object.Request.socket.RecordRequest;
 import com.group2.kahootclone.object.Response.slideController.SlideResponse;
 import com.group2.kahootclone.object.ResponseObject;
 
@@ -16,4 +17,8 @@ public interface ISlideService {
     ResponseObject<Boolean> deleteSlide(int slideId);
 
     ResponseObject<SlideResponse> getSlide(int slideId);
+
+    ResponseObject<SlideResponse> presentSlide(int slideId);
+
+    ResponseObject<SlideResponse> saveRecord(RecordRequest data);
 }

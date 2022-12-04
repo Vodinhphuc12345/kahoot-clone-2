@@ -18,6 +18,8 @@ public class Slide extends BaseModel {
     String content;
     String answer;
 
+    boolean isPresenting;
+
     //options
     @ElementCollection
     List<String> options;
