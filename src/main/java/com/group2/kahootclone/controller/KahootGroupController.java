@@ -6,14 +6,13 @@ import com.group2.kahootclone.object.EmailDetails;
 import com.group2.kahootclone.object.Request.kahootGroupController.AssignRoleRequest;
 import com.group2.kahootclone.object.Request.kahootGroupController.EmailInvitationRequest;
 import com.group2.kahootclone.object.Request.kahootGroupController.KahootGroupRequest;
+import com.group2.kahootclone.object.Request.presentationController.PresentationRequest;
 import com.group2.kahootclone.object.Response.groupController.InvitationResponse;
 import com.group2.kahootclone.object.Response.groupController.KahootGroupResponse;
 import com.group2.kahootclone.object.Response.meController.UserResponse;
+import com.group2.kahootclone.object.Response.presentationController.PresentationResponse;
 import com.group2.kahootclone.object.ResponseObject;
-import com.group2.kahootclone.service.Interface.IEmailService;
-import com.group2.kahootclone.service.Interface.IInvitationService;
-import com.group2.kahootclone.service.Interface.IKahootGroupService;
-import com.group2.kahootclone.service.Interface.IUserService;
+import com.group2.kahootclone.service.Interface.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -39,6 +38,9 @@ public class KahootGroupController {
 
     @Autowired
     IEmailService emailService;
+
+    @Autowired
+    IPresentationService presentationService;
 
     @Value("${kahoot.clone.fe}")
     String fehost;
@@ -139,5 +141,26 @@ public class KahootGroupController {
         }
 
         return invitationRet.createResponse();
+    }
+
+
+    //create presentation for group
+    @PreAuthorize("@groupRole.isOwner(authentication, #groupId) or @groupRole.isCoOwner(authentication, #groupId)")
+    @PostMapping("/{groupId}/presentation")
+    public ResponseEntity<ResponseObject<PresentationResponse>> createPresentation (@PathVariable int groupId,
+                                                                                    @RequestBody PresentationRequest request){
+        int userId = (int) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        ResponseObject<PresentationResponse> presentationRes = presentationService.createPresentation(userId, groupId, request);
+        return presentationRes.createResponse();
+    }
+
+    //list presentations of group
+    @PreAuthorize("@groupRole.isOwner(authentication, #groupId) " +
+            "or @groupRole.isCoOwner(authentication, #groupId) " +
+            "or @groupRole.isMember(authentication, #groupId)")
+    @GetMapping("/{groupId}/presentation")
+    public ResponseEntity<ResponseObject<List<PresentationResponse>>> getPresentationsOfGroup (@PathVariable int groupId){
+        ResponseObject<List<PresentationResponse>> presentationRes = presentationService.getPresentationsOfGroup(groupId);
+        return presentationRes.createResponse();
     }
 }

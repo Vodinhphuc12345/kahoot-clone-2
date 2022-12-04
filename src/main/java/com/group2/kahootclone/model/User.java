@@ -25,11 +25,28 @@ public class User extends BaseModel {
     private String provider = Providers.LOCAL.toString();
     private boolean active;
 
+    // list group
     @OneToMany(
             mappedBy = "user",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
     List<UserKahootGroup> userKahootGroups;
+
+    //list record
+    @OneToMany(
+            mappedBy = "user",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    List<Record> records;
+
+    //list created presentation
+    @OneToMany(
+            mappedBy = "user",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    List<Presentation> presentations;
 
 }

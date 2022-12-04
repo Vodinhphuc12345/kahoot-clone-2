@@ -20,6 +20,7 @@ import java.util.List;
 public class KahootGroup extends BaseModel {
     private String groupName;
     private String description;
+    //list user
     @OneToMany(
             mappedBy = "kahootGroup",
             cascade = CascadeType.ALL,
@@ -27,8 +28,17 @@ public class KahootGroup extends BaseModel {
     )
     List<UserKahootGroup> userKahootGroups;
 
+    //list presentation
+    @OneToMany(
+            mappedBy = "kahootGroup",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    List<Presentation> presentations;
+
     @OneToMany(mappedBy = "kahootGroup", cascade = CascadeType.ALL)
     List<Invitation> invitations;
+
 
     @Override
     public String toString() {
