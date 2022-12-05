@@ -1,5 +1,6 @@
-package com.group2.kahootclone.object.Request.socket;
+package com.group2.kahootclone.socket.Response;
 
+import com.group2.kahootclone.constant.socket.message.ServerMessageType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,5 +11,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MetaData {
-    String roomName;
+    ServerMessageType messageType;
 }

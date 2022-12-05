@@ -4,7 +4,7 @@ import com.group2.kahootclone.constant.ErrorCodes;
 import com.group2.kahootclone.mapper.SlideMapper;
 import com.group2.kahootclone.model.*;
 import com.group2.kahootclone.object.Request.slideController.SlideRequest;
-import com.group2.kahootclone.object.Request.socket.RecordRequest;
+import com.group2.kahootclone.socket.Request.slideHandler.RecordRequest;
 import com.group2.kahootclone.object.Response.slideController.SlideResponse;
 import com.group2.kahootclone.object.ResponseObject;
 import com.group2.kahootclone.reposibility.PresentationRepository;

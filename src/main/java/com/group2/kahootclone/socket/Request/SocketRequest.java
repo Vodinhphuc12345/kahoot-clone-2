@@ -1,4 +1,4 @@
-package com.group2.kahootclone.object.Request.socket;
+package com.group2.kahootclone.socket.Request;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,10 +6,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class PresentSlideRequest {
+public class SocketRequest<T> {
     MetaData metaData;
-    int slideId;
+    T message;
 }

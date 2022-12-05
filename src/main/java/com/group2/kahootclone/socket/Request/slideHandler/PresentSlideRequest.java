@@ -1,5 +1,6 @@
-package com.group2.kahootclone.object.Request.socket;
+package com.group2.kahootclone.socket.Request.slideHandler;
 
+import com.group2.kahootclone.socket.Request.MetaData;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,6 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class RoomRequest {
-    MetaData metaData;
+public class PresentSlideRequest {
+    int slideId;
 }

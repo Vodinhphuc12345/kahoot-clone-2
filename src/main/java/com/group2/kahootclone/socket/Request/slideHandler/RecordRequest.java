@@ -1,8 +1,9 @@
-package com.group2.kahootclone.object.Request.socket;
+package com.group2.kahootclone.socket.Request.slideHandler;
 
 import com.group2.kahootclone.Utils.MapperUtil;
 import com.group2.kahootclone.model.Record;
 import com.group2.kahootclone.model.RecordId;
+import com.group2.kahootclone.socket.Request.MetaData;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,7 +14,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class RecordRequest {
-    MetaData metaData;
     String answer;
     int userId;
     int slideId;

@@ -1,7 +1,7 @@
 package com.group2.kahootclone.service.Interface;
 
 import com.group2.kahootclone.object.Request.slideController.SlideRequest;
-import com.group2.kahootclone.object.Request.socket.RecordRequest;
+import com.group2.kahootclone.socket.Request.slideHandler.RecordRequest;
 import com.group2.kahootclone.object.Response.slideController.SlideResponse;
 import com.group2.kahootclone.object.ResponseObject;
 
