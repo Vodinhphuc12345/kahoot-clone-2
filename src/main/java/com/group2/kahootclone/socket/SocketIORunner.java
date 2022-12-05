@@ -13,6 +13,6 @@ public class SocketIORunner implements CommandLineRunner {
     private final SocketIOServer server;
     @Override
     public void run(String... args) throws Exception {
-        server.start();
+//        server.start();
     }
 }
