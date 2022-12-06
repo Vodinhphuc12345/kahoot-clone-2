@@ -14,6 +14,8 @@ public class WebsocketConfig implements WebSocketConfigurer {
     WebsocketBroadcastHandler broadcastHandler;
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(broadcastHandler, "/socket");
+        registry.addHandler(broadcastHandler, "/socket")
+                .setAllowedOrigins("*")
+                .setAllowedOriginPatterns("*");
     }
 }
