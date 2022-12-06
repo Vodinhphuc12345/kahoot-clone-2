@@ -74,6 +74,10 @@ public class SlideService implements ISlideService {
 
             //get slide of  presentation
             Slide slide = request.toSlide();
+
+            if (presentation.getSlides().isEmpty()){
+                slide.setPresenting(true);
+            }
             slide.setPresentation(presentation);
             Slide savedSlide = slideRepository.save(slide);
             //build success
