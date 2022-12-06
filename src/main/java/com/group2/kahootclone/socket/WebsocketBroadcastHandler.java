@@ -1,14 +1,11 @@
 package com.group2.kahootclone.socket;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.group2.kahootclone.Utils.MapperUtil;
 import com.group2.kahootclone.socket.Request.SocketRequest;
 import com.group2.kahootclone.socket.eventHandlers.RoomHandler;
 import com.group2.kahootclone.socket.eventHandlers.SlideHandler;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;

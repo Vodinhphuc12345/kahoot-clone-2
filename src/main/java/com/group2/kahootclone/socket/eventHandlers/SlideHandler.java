@@ -64,9 +64,7 @@ public class SlideHandler {
                                 SocketRequest<RecordRequest> message) {
         try {
             //get
-            int userId = (int) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             RecordRequest recordRequest = message.getMessage();
-            recordRequest.setUserId(userId);
 
             //set
             ResponseObject<SlideResponse> slideResponse = slideService.saveRecord(recordRequest);
