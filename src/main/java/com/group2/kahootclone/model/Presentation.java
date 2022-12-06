@@ -14,7 +14,7 @@ import java.util.List;
 @SuperBuilder
 @Entity
 @Table
-public class Presentation extends BaseModel{
+public class Presentation extends BaseModel {
     String presentationName;
     String description;
     String roomName;
@@ -35,4 +35,15 @@ public class Presentation extends BaseModel{
     )
     List<Slide> slides;
 
+    @Override
+    public String toString() {
+        return "Presentation{" +
+                "presentationName='" + presentationName + '\'' +
+                ", description='" + description + '\'' +
+                ", roomName='" + roomName + '\'' +
+                ", id=" + id +
+                ", dateCreated=" + dateCreated +
+                ", dateUpdated=" + dateUpdated +
+                '}';
+    }
 }

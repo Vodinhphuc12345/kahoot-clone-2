@@ -20,4 +20,15 @@ public class Verification extends BaseModel {
     private long timeExpired;
     @ManyToOne
     private User user;
+
+    @Override
+    public String toString() {
+        return "Verification{" +
+                "code='" + code + '\'' +
+                ", timeExpired=" + timeExpired +
+                ", id=" + id +
+                ", dateCreated=" + dateCreated +
+                ", dateUpdated=" + dateUpdated +
+                '}';
+    }
 }

@@ -25,19 +25,20 @@ public class SlideResponse extends RepresentationModel<BaseResponse> {
     List<String> options;
     String answer;
     boolean isPresenting;
-    List<RecordResponse> records;
+    List<RecordResponse> userRecords;
 
     public static SlideResponse fromSlide(Slide slide) {
         SlideResponse response = MapperUtil.INSTANCE.map(slide, SlideResponse.class);
         Link link = linkTo(methodOn(SlideController.class).getSlide(slide.getPresentation().getId(), slide.getId())).withSelfRel();
         response.add(link);
 
-        List<RecordResponse> recordResponses = slide.getRecords().
-                stream()
-                .map(RecordResponse::fromRecord)
-                .collect(Collectors.toList());
-
-        response.setRecords(recordResponses);
+        if (slide.getRecords() != null) {
+            List<RecordResponse> recordResponses = slide.getRecords().
+                    stream()
+                    .map(RecordResponse::fromRecord)
+                    .collect(Collectors.toList());
+            response.setUserRecords(recordResponses);
+        }
         return response;
     }
 }

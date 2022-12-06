@@ -49,4 +49,19 @@ public class User extends BaseModel {
     )
     List<Presentation> presentations;
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", displayName='" + displayName + '\'' +
+                ", avatar='" + avatar + '\'' +
+                ", provider='" + provider + '\'' +
+                ", active=" + active +
+                ", id=" + id +
+                ", dateCreated=" + dateCreated +
+                ", dateUpdated=" + dateUpdated +
+                '}';
+    }
 }

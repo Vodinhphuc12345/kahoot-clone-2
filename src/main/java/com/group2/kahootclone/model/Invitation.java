@@ -19,4 +19,15 @@ public class Invitation extends BaseModel{
     @JoinColumn(name="kahoot_group_id")
     private KahootGroup kahootGroup;
     private long expiredTime;
+
+    @Override
+    public String toString() {
+        return "Invitation{" +
+                "code='" + code + '\'' +
+                ", expiredTime=" + expiredTime +
+                ", id=" + id +
+                ", dateCreated=" + dateCreated +
+                ", dateUpdated=" + dateUpdated +
+                '}';
+    }
 }

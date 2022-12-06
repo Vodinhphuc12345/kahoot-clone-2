@@ -35,4 +35,17 @@ public class Slide extends BaseModel {
             orphanRemoval = true
     )
     List<Record> records;
+
+    @Override
+    public String toString() {
+        return "Slide{" +
+                "content='" + content + '\'' +
+                ", answer='" + answer + '\'' +
+                ", isPresenting=" + isPresenting +
+                ", presentation=" + presentation +
+                ", id=" + id +
+                ", dateCreated=" + dateCreated +
+                ", dateUpdated=" + dateUpdated +
+                '}';
+    }
 }
