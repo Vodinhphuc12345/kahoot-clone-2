@@ -32,6 +32,7 @@ public class SlideService implements ISlideService {
     SlideRepository slideRepository;
     @Autowired
     RecordRepository recordRepository;
+
     @Override
     public ResponseObject<List<SlideResponse>> getSlidesOfPresentation(int presentationId) {
         ResponseObject<List<SlideResponse>> ret = new ResponseObject<>();
@@ -75,7 +76,7 @@ public class SlideService implements ISlideService {
             //get slide of  presentation
             Slide slide = request.toSlide();
 
-            if (presentation.getSlides().isEmpty()){
+            if (presentation.getSlides().isEmpty()) {
                 slide.setPresenting(true);
             }
             slide.setPresentation(presentation);
@@ -218,11 +219,11 @@ public class SlideService implements ISlideService {
                 return ret;
             }
             //save record
-            Record requestRecord = Record
-                    .builder()
-                    .user(user)
-                    .slide(slide)
-                    .build();
+            Record requestRecord = new Record();
+            requestRecord.setUser(user);
+            requestRecord.setSlide(slide);
+            requestRecord.setAnswer(request.getAnswer());
+
             Record savedRecord = recordRepository.save(requestRecord);
             //build success
             ret.setObject(SlideResponse.fromSlide(savedRecord.getSlide()));
