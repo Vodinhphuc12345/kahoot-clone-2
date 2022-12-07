@@ -7,6 +7,7 @@ import com.group2.kahootclone.socket.eventHandlers.SlideHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
@@ -52,6 +53,12 @@ public class WebsocketBroadcastHandler extends TextWebSocketHandler {
                     log.error("Invalid message type {}", socketRequest.getMetaData());
             }
         } catch (IOException e) {
+            sessions.remove(session);
+            for (Map.Entry<String, Map<String, Set<WebSocketSession>>> entry: roomMap.entrySet()){
+                for (Map.Entry<String, Set<WebSocketSession>> entry1: entry.getValue().entrySet()){
+                    entry1.getValue().remove(session);
+                }
+            }
             throw new RuntimeException(e);
         }
     }
@@ -60,5 +67,15 @@ public class WebsocketBroadcastHandler extends TextWebSocketHandler {
     public void afterConnectionEstablished(WebSocketSession session) {
         log.error("Having connection from {}", session.getUri());
         sessions.add(session);
+    }
+
+    @Override
+    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+        sessions.remove(session);
+        for (Map.Entry<String, Map<String, Set<WebSocketSession>>> entry: roomMap.entrySet()){
+            for (Map.Entry<String, Set<WebSocketSession>> entry1: entry.getValue().entrySet()){
+                entry1.getValue().remove(session);
+            }
+        }
     }
 }
