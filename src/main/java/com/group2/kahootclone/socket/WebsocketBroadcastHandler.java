@@ -1,7 +1,10 @@
 package com.group2.kahootclone.socket;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.group2.kahootclone.socket.Request.SocketRequest;
+import com.group2.kahootclone.socket.Request.slideHandler.PresentSlideRequest;
+import com.group2.kahootclone.socket.Request.slideHandler.RecordRequest;
 import com.group2.kahootclone.socket.eventHandlers.RoomHandler;
 import com.group2.kahootclone.socket.eventHandlers.SlideHandler;
 import lombok.extern.slf4j.Slf4j;
@@ -44,10 +47,14 @@ public class WebsocketBroadcastHandler extends TextWebSocketHandler {
                     roomHandler.handleLeaveRoom(session, roomMap, socketRequest);
                     break;
                 case VOTE_SLIDE:
-                    slideHandler.handleVoteSlide(session, roomMap, socketRequest);
+                    SocketRequest<RecordRequest> voteRequest = new ObjectMapper().readValue(message.getPayload(),
+                            new TypeReference<SocketRequest<RecordRequest>>() {});
+                    slideHandler.handleVoteSlide(session, roomMap, voteRequest);
                     break;
                 case PRESENT_SLIDE:
-                    slideHandler.handlePresentSlide(session, roomMap, socketRequest);
+                    SocketRequest<PresentSlideRequest> presentRequest = new ObjectMapper().readValue(message.getPayload(),
+                            new TypeReference<SocketRequest<PresentSlideRequest>>() {});
+                    slideHandler.handlePresentSlide(session, roomMap, presentRequest);
                     break;
                 default:
                     log.error("Invalid message type {}", socketRequest.getMetaData());

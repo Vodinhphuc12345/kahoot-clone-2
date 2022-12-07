@@ -14,9 +14,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class RecordRequest {
-    String answer;
     int userId;
     int slideId;
+    String answer;
     public Record toRecord() {
         RecordId recordId = new RecordId(userId, slideId);
         Record record = MapperUtil.INSTANCE.map(this, Record.class);
