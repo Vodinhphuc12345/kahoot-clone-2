@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -138,6 +139,7 @@ public class SlideService implements ISlideService {
         return ret;
     }
 
+    @Transactional
     @Override
     public ResponseObject<SlideResponse> getSlide(int slideId) {
         ResponseObject<SlideResponse> ret = new ResponseObject<>();
@@ -189,6 +191,7 @@ public class SlideService implements ISlideService {
         return ret;
     }
 
+    @Transactional
     @Override
     public ResponseObject<SlideResponse> saveRecord(RecordRequest request) {
         ResponseObject<SlideResponse> ret = new ResponseObject<>();
@@ -226,6 +229,7 @@ public class SlideService implements ISlideService {
 
             Record savedRecord = recordRepository.save(requestRecord);
             //build success
+
             ret.setObject(SlideResponse.fromSlide(savedRecord.getSlide()));
         } catch (Exception exception) {
             log.error(exception.getMessage(), exception);

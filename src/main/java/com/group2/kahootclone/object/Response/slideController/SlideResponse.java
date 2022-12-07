@@ -28,6 +28,7 @@ public class SlideResponse extends RepresentationModel<BaseResponse> {
     List<RecordResponse> userRecords;
 
     public static SlideResponse fromSlide(Slide slide) {
+        if (slide == null) return  null;
         SlideResponse response = MapperUtil.INSTANCE.map(slide, SlideResponse.class);
         Link link = linkTo(methodOn(SlideController.class).getSlide(slide.getPresentation().getId(), slide.getId())).withSelfRel();
         response.add(link);

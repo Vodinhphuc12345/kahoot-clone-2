@@ -71,6 +71,7 @@ public class SlideHandler {
 
             //set
             ResponseObject<SlideResponse> slideResponse = slideService.saveRecord(recordRequest);
+            slideResponse = slideService.getSlide(recordRequest.getSlideId());
 
             //send
             MetaData metaData = new MetaData();

@@ -44,7 +44,6 @@ public class Record {
     @Override
     public String toString() {
         return "Record{" +
-                ", slide=" + slide +
                 ", answer='" + answer + '\'' +
                 ", correct=" + correct +
                 ", dateCreated=" + dateCreated +

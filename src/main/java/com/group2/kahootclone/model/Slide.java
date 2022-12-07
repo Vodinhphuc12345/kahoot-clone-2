@@ -17,7 +17,6 @@ import java.util.List;
 public class Slide extends BaseModel {
     String content;
     String answer;
-
     boolean isPresenting;
 
     //options
@@ -42,7 +41,6 @@ public class Slide extends BaseModel {
                 "content='" + content + '\'' +
                 ", answer='" + answer + '\'' +
                 ", isPresenting=" + isPresenting +
-                ", presentation=" + presentation +
                 ", id=" + id +
                 ", dateCreated=" + dateCreated +
                 ", dateUpdated=" + dateUpdated +
