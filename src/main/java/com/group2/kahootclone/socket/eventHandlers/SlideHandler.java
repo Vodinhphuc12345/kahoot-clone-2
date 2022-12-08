@@ -90,7 +90,9 @@ public class SlideHandler {
                 for (WebSocketSession socketSession : subRoomMap.get(ClientType.HOST.toString())) {
                     socketSession.sendMessage(new TextMessage(responseStr));
                 }
-            session.sendMessage(new TextMessage(responseStr));
+
+            socketResponse.setMessage(null);
+            session.sendMessage(new TextMessage(new ObjectMapper().writeValueAsString(socketResponse)));
         } catch (Exception exception) {
             log.error(exception.getMessage(), exception);
         }
