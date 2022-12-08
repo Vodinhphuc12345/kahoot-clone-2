@@ -62,4 +62,13 @@ public class SlideController {
         ResponseObject<Boolean> slideRet = slideService.deleteSlide(slideId);
         return slideRet.createResponse();
     }
+
+    @PreAuthorize("@presentationRole.isOwner(authentication, #presentationId) " +
+            "or @presentationRole.isCoOwner(authentication, #presentationId)" +
+            "or @presentationRole.isMember(authentication, #presentationId)")
+    @GetMapping("/presenting")
+    public ResponseEntity<ResponseObject<SlideResponse>> getPresentingSlide (@PathVariable int presentationId){
+        ResponseObject<SlideResponse> slideRet = slideService.getPresentingSlide(presentationId);
+        return slideRet.createResponse();
+    }
 }
