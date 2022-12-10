@@ -281,4 +281,45 @@ public class SlideService implements ISlideService {
         }
         return ret;
     }
+
+    @Override
+    public ResponseObject<SlideResponse> getPresentingSlideGA02(int presentationId) {
+        ResponseObject<SlideResponse> ret = new ResponseObject<>();
+        try {
+            //group
+            Optional<Presentation> presentationRet = presentationRepository.findById(presentationId);
+            Presentation presentation = presentationRet.orElse(null);
+
+            if (presentation == null) {
+                ret.buildResourceNotFound("Presentation not found.");
+                return ret;
+            }
+
+            //get slide of  presentation
+            Optional<Slide> slideRet = presentation.getSlides().stream().findAny();
+
+            //check slide
+            Slide slide = slideRet.orElse(null);
+
+            if (slide == null) {
+                ret.setObject(null);
+                return ret;
+            }
+            //check existed answer
+            int userId = (int) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            RecordId recordId = new RecordId(userId, slide.getId());
+
+            Record record = recordRepository.findByRecordId(recordId);
+            if (record != null){
+                ret.setObject(null);
+                return ret;
+            }
+            //build success
+            ret.setObject(SlideResponse.fromSlide(slide));
+        } catch (Exception exception) {
+            log.error(exception.getMessage(), exception);
+            ret.buildException(exception.getMessage());
+        }
+        return ret;
+    }
 }

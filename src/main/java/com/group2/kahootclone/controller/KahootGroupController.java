@@ -143,17 +143,6 @@ public class KahootGroupController {
         return invitationRet.createResponse();
     }
 
-
-    //create presentation for group
-    @PreAuthorize("@groupRole.isOwner(authentication, #groupId) or @groupRole.isCoOwner(authentication, #groupId)")
-    @PostMapping("/{groupId}/presentation")
-    public ResponseEntity<ResponseObject<PresentationResponse>> createPresentation (@PathVariable int groupId,
-                                                                                    @RequestBody PresentationRequest request){
-        int userId = (int) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        ResponseObject<PresentationResponse> presentationRes = presentationService.createPresentation(userId, groupId, request);
-        return presentationRes.createResponse();
-    }
-
     //list presentations of group
     @PreAuthorize("@groupRole.isOwner(authentication, #groupId) " +
             "or @groupRole.isCoOwner(authentication, #groupId) " +

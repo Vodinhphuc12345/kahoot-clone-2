@@ -18,57 +18,63 @@ import java.util.List;
 public class SlideController {
     @Autowired
     ISlideService slideService;
-    @PreAuthorize("@presentationRole.isOwner(authentication, #presentationId) " +
-            "or @presentationRole.isCoOwner(authentication, #presentationId)" +
-            "or @presentationRole.isMember(authentication, #presentationId)")
+
+    @PreAuthorize("@presentationRole.isCreator(authentication, #presentationId) " +
+            "or @presentationRole.isSharingCreator(authentication, #presentationId)")
     @GetMapping("")
-    public ResponseEntity<ResponseObject<List<SlideResponse>>> getSlideOfPresentation (@PathVariable int presentationId){
+    public ResponseEntity<ResponseObject<List<SlideResponse>>> getSlideOfPresentation(@PathVariable int presentationId) {
         ResponseObject<List<SlideResponse>> presentationRes = slideService.getSlidesOfPresentation(presentationId);
         return presentationRes.createResponse();
     }
 
-    @PreAuthorize("@presentationRole.isOwner(authentication, #presentationId) " +
-            "or @presentationRole.isCoOwner(authentication, #presentationId)")
+    @PreAuthorize("@presentationRole.isCreator(authentication, #presentationId) " +
+            "or @presentationRole.isSharingCreator(authentication, #presentationId)")
     @PostMapping("")
-    public ResponseEntity<ResponseObject<SlideResponse>> createSlide (@PathVariable int presentationId, @RequestBody SlideRequest request){
+    public ResponseEntity<ResponseObject<SlideResponse>> createSlide(@PathVariable int presentationId, @RequestBody SlideRequest request) {
         ResponseObject<SlideResponse> slideRet = slideService.createSlide(presentationId, request);
         return slideRet.createResponse();
     }
 
-    @PreAuthorize("@presentationRole.isOwner(authentication, #presentationId) " +
-            "or @presentationRole.isCoOwner(authentication, #presentationId)")
+    @PreAuthorize("@presentationRole.isCreator(authentication, #presentationId) " +
+            "or @presentationRole.isSharingCreator(authentication, #presentationId)")
     @PutMapping("/{slideId}")
-    public ResponseEntity<ResponseObject<SlideResponse>> updateSlide (@PathVariable int presentationId,
-                                                                      @PathVariable int slideId,
-                                                                      @RequestBody SlideRequest request){
+    public ResponseEntity<ResponseObject<SlideResponse>> updateSlide(@PathVariable int presentationId,
+                                                                     @PathVariable int slideId,
+                                                                     @RequestBody SlideRequest request) {
         ResponseObject<SlideResponse> slideRet = slideService.updateSlide(slideId, request);
         return slideRet.createResponse();
     }
 
-    @PreAuthorize("@presentationRole.isOwner(authentication, #presentationId) " +
-            "or @presentationRole.isCoOwner(authentication, #presentationId)")
+    @PreAuthorize("@presentationRole.isCreator(authentication, #presentationId) " +
+            "or @presentationRole.isSharingCreator(authentication, #presentationId)")
     @GetMapping("/{slideId}")
-    public ResponseEntity<ResponseObject<SlideResponse>> getSlide (@PathVariable int presentationId,
-                                                                      @PathVariable int slideId){
+    public ResponseEntity<ResponseObject<SlideResponse>> getSlide(@PathVariable int presentationId,
+                                                                  @PathVariable int slideId) {
         ResponseObject<SlideResponse> slideRet = slideService.getSlide(slideId);
         return slideRet.createResponse();
     }
 
-    @PreAuthorize("@presentationRole.isOwner(authentication, #presentationId) " +
-            "or @presentationRole.isCoOwner(authentication, #presentationId)")
+    @PreAuthorize("@presentationRole.isCreator(authentication, #presentationId) " +
+            "or @presentationRole.isSharingCreator(authentication, #presentationId)")
     @DeleteMapping("/{slideId}")
-    public ResponseEntity<ResponseObject<Boolean>> deleteSlide (@PathVariable int presentationId,
-                                                                      @PathVariable int slideId){
+    public ResponseEntity<ResponseObject<Boolean>> deleteSlide(@PathVariable int presentationId,
+                                                               @PathVariable int slideId) {
         ResponseObject<Boolean> slideRet = slideService.deleteSlide(slideId);
         return slideRet.createResponse();
     }
 
-    @PreAuthorize("@presentationRole.isOwner(authentication, #presentationId) " +
-            "or @presentationRole.isCoOwner(authentication, #presentationId)" +
-            "or @presentationRole.isMember(authentication, #presentationId)")
+    @PreAuthorize("@presentationRole.isCreator(authentication, #presentationId) " +
+            "or @presentationRole.isParticipant(authentication, #presentationId) ")
     @GetMapping("/presenting")
-    public ResponseEntity<ResponseObject<SlideResponse>> getPresentingSlide (@PathVariable int presentationId){
+    public ResponseEntity<ResponseObject<SlideResponse>> getPresentingSlide(@PathVariable int presentationId) {
         ResponseObject<SlideResponse> slideRet = slideService.getPresentingSlide(presentationId);
+        return slideRet.createResponse();
+    }
+
+    // this is for GA02
+    @GetMapping("/presenting/ga02")
+    public ResponseEntity<ResponseObject<SlideResponse>> getPresentSlideForGA02(@PathVariable int presentationId) {
+        ResponseObject<SlideResponse> slideRet = slideService.getPresentingSlideGA02(presentationId);
         return slideRet.createResponse();
     }
 }

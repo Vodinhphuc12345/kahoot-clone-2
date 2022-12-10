@@ -24,8 +24,8 @@ public class Presentation extends BaseModel {
     private User user;
 
     // group
-    @ManyToOne(fetch = FetchType.LAZY)
-    private KahootGroup kahootGroup;
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "presentations")
+    private List<KahootGroup> kahootGroup;
 
     //list slide
     @OneToMany(

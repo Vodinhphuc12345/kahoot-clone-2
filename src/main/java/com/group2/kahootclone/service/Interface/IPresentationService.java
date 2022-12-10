@@ -7,7 +7,7 @@ import com.group2.kahootclone.object.ResponseObject;
 import java.util.List;
 
 public interface IPresentationService {
-    ResponseObject<PresentationResponse> createPresentation(int userId,int groupId, PresentationRequest request);
+    ResponseObject<PresentationResponse> createPresentation(int userId, PresentationRequest request);
 
     ResponseObject<PresentationResponse> updatePresentation(int presentationId, PresentationRequest request);
 

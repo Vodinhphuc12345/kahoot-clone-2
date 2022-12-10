@@ -23,4 +23,6 @@ public interface ISlideService {
     ResponseObject<SlideResponse> saveRecord(RecordRequest data);
 
     ResponseObject<SlideResponse> getPresentingSlide(int presentationId);
+
+    ResponseObject<SlideResponse> getPresentingSlideGA02(int presentationId);
 }

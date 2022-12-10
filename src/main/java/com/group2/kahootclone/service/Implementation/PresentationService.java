@@ -31,18 +31,9 @@ public class PresentationService implements IPresentationService {
     @Autowired
     UserRepository userRepository;
     @Override
-    public ResponseObject<PresentationResponse> createPresentation(int userId, int groupId, PresentationRequest request) {
+    public ResponseObject<PresentationResponse> createPresentation(int userId, PresentationRequest request) {
         ResponseObject<PresentationResponse> ret = new ResponseObject<>();
         try {
-            //group
-            Optional<KahootGroup> groupRet = groupRepository.findById(groupId);
-            KahootGroup group = groupRet.orElse(null);
-
-            if (group == null) {
-                ret.buildResourceNotFound("Group not found.");
-                return ret;
-            }
-
             //user
             Optional<User> userRet = userRepository.findById(userId);
             User user = userRet.orElse(null);
@@ -55,7 +46,6 @@ public class PresentationService implements IPresentationService {
             //get presentation
             Presentation presentation = request.toPresentation();
             presentation.setUser(user);
-            presentation.setKahootGroup(group);
             //build room
             String roomName = UUID.randomUUID().toString();
             presentation.setRoomName(roomName);

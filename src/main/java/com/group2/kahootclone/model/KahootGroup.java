@@ -5,10 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.util.List;
 
 @Data
@@ -29,13 +26,15 @@ public class KahootGroup extends BaseModel {
     List<UserKahootGroup> userKahootGroups;
 
     //list presentation
-    @OneToMany(
-            mappedBy = "kahootGroup",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "kahoot_group_presentation",
+            joinColumns = @JoinColumn(name = "group_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "presentation_id", referencedColumnName = "id")
     )
     List<Presentation> presentations;
 
+    // list invitation
     @OneToMany(mappedBy = "kahootGroup", cascade = CascadeType.ALL)
     List<Invitation> invitations;
 
