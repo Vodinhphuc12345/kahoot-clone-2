@@ -45,9 +45,6 @@ public class AuthController {
     @Autowired
     IEmailService emailService;
 
-    @Value("${kahoot.clone.fe}")
-    String fehost;
-
     @PostMapping("refreshToken")
     public ResponseEntity<ResponseObject<TokenResponse>> refreshTokenController(HttpServletRequest request) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -57,7 +54,7 @@ public class AuthController {
     }
 
     @PostMapping("login")
-    public ResponseEntity<ResponseObject<LoginResponse>> loginController(@RequestBody @Valid LoginRequest loginRequest) {
+    public ResponseEntity<ResponseObject<LoginResponse>> loginController(@RequestBody @Valid LoginRequest loginRequest, HttpServletRequest request) {
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword());
         Authentication auth = authenticationManager.authenticate(token);
         ResponseObject<LoginResponse> loginRet = userService.login(loginRequest);
@@ -73,17 +70,18 @@ public class AuthController {
 
 
     @PostMapping("register")
-    public ResponseEntity<ResponseObject<VerificationResponse>> registerController(@Valid @RequestBody RegisterRequest registerRequest, HttpServletRequest request) {
+    public ResponseEntity<ResponseObject<VerificationResponse>> registerController(@Valid @RequestBody RegisterRequest registerRequest,
+                                                                                   HttpServletRequest request) {
 
         ResponseObject<VerificationResponse> registerUserRet = userService.register(registerRequest);
         if (ErrorUtils.isFail(registerUserRet.getErrorCode())) return registerUserRet.createResponse();
 
         VerificationResponse verificationResponse = registerUserRet.getObject();
-        String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
+        String fehost = request.getHeader("origin");
         EmailDetails emailDetails = EmailDetails.builder()
                 .attachment("No")
                 .recipient(registerRequest.getEmail())
-                .msgBody(EmailUtils.buildVerificationTemplate(baseUrl, verificationResponse))
+                .msgBody(EmailUtils.buildVerificationTemplate(fehost, verificationResponse))
                 .subject("Verification")
                 .build();
         emailService.sendSimpleEmail(emailDetails);
@@ -92,16 +90,14 @@ public class AuthController {
     }
 
     @GetMapping("verification")
-    public void verification(@RequestParam int verificationId, @RequestParam String code, HttpServletResponse httpResponse) throws IOException {
+    public ResponseEntity<ResponseObject<LoginResponse>> verification(@RequestParam int verificationId, @RequestParam String code,
+                                                                      HttpServletRequest httpRequest,
+                                                                      HttpServletResponse httpResponse) throws IOException {
+        String fehost = httpRequest.getHeader("origin");
         VerificationRequest verificationRequest = VerificationRequest.builder().verificationId(verificationId).code(code).build();
-        ResponseObject<TokenResponse> tokenRet = verificationService.checkAndVerifyVerification(verificationRequest);
-        if (ErrorUtils.isFail(tokenRet.getErrorCode())) {
-            httpResponse.sendRedirect(String.format("%s/verification?error=%s", fehost, tokenRet.getMessage()));
-            return;
-        }
-        httpResponse.sendRedirect(String.format("%s/verification?access_token=%s&refresh_token=%s",
-                fehost,
-                tokenRet.getObject().getAccess_token(),
-                tokenRet.getObject().getRefresh_token()));
+        ResponseObject<LoginResponse> verificationRes = verificationService.checkAndVerifyVerification(verificationRequest);
+
+        return verificationRes.createResponse();
+
     }
 }

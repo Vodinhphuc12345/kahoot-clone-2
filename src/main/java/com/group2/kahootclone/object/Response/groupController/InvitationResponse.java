@@ -28,8 +28,6 @@ public class InvitationResponse extends BaseResponse {
         if (invitation == null) return null;
         InvitationResponse invitationResponse = MapperUtil.INSTANCE.map(invitation, InvitationResponse.class);
         invitationResponse.setGroupName(invitation.getKahootGroup().getGroupName());
-        invitationResponse.setInvitationLink(LinkUtils.buildInvitationLink(invitation.getCode(),
-                "https://kahoot-clone-khoi-thong-phuc.vercel.app"));
         return invitationResponse;
     }
 }

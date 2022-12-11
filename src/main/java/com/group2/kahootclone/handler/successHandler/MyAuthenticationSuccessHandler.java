@@ -26,8 +26,6 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
     @Autowired
     RefreshTokenRepository refreshTokenRepository;
 
-    @Value("${kahoot.clone.fe}")
-    String fehost;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication
@@ -44,6 +42,7 @@ public class MyAuthenticationSuccessHandler implements AuthenticationSuccessHand
                     .build());
         }
 
+        String fehost = request.getHeader("origin");
         String access_token = JwtUtils.genAccessToken(user);
         String refresh_token = JwtUtils.genRefreshToken(user);
         refreshTokenRepository.save(RefreshToken.builder().token(refresh_token).build());

@@ -93,7 +93,7 @@ public class InvitationService implements IInvitationService {
         ResponseObject<InvitationResponse> ret = new ResponseObject<>();
         try {
             Optional<KahootGroup> kahootGroupRet = kahootGroupRepository.findById(groupId);
-            KahootGroup kahootGroup = kahootGroupRet.isEmpty() ? null : kahootGroupRet.get();
+            KahootGroup kahootGroup = kahootGroupRet.orElse(null);
 
             //build resource not found
             if (kahootGroup == null) {

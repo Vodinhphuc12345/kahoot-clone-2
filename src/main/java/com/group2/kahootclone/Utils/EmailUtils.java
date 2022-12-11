@@ -1,14 +1,13 @@
 package com.group2.kahootclone.Utils;
 
-import com.group2.kahootclone.model.Verification;
 import com.group2.kahootclone.object.Response.authController.VerificationResponse;
 
 import java.util.Date;
 
 public class EmailUtils {
-    public static String buildVerificationTemplate(String behost, VerificationResponse verification) {
+    public static String buildVerificationTemplate(String fehost, VerificationResponse verification) {
         return com.group2.kahootclone.constant.emailTemplate.verification.TEMPLATE
-                .replaceAll("\\{\\{verificationLink\\}\\}", LinkUtils.buildVerificationLink(verification, behost))
+                .replaceAll("\\{\\{verificationLink\\}\\}", LinkUtils.buildVerificationLink(verification, fehost))
                 .replaceAll("\\{\\{expiredTime\\}\\}", String.valueOf(new Date(verification.getTimeExpired())));
     }
 

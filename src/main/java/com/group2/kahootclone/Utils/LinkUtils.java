@@ -3,9 +3,9 @@ package com.group2.kahootclone.Utils;
 import com.group2.kahootclone.object.Response.authController.VerificationResponse;
 
 public class LinkUtils {
-    public static String buildVerificationLink(VerificationResponse verification, String behost) {
-        return String.format("%s/api/v1/auth/verification?verificationId=%s&code=%s",
-                behost,
+    public static String buildVerificationLink(VerificationResponse verification, String fehost) {
+        return String.format("%s/verification?verificationId=%s&code=%s",
+                fehost,
                 verification.getId(),
                 verification.getCode());
     }

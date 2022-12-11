@@ -2,6 +2,7 @@ package com.group2.kahootclone.controller;
 
 import com.group2.kahootclone.Utils.EmailUtils;
 import com.group2.kahootclone.Utils.ErrorUtils;
+import com.group2.kahootclone.Utils.LinkUtils;
 import com.group2.kahootclone.object.EmailDetails;
 import com.group2.kahootclone.object.Request.kahootGroupController.AssignRoleRequest;
 import com.group2.kahootclone.object.Request.kahootGroupController.EmailInvitationRequest;
@@ -13,6 +14,7 @@ import com.group2.kahootclone.object.Response.meController.UserResponse;
 import com.group2.kahootclone.object.Response.presentationController.PresentationResponse;
 import com.group2.kahootclone.object.ResponseObject;
 import com.group2.kahootclone.service.Interface.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -21,9 +23,11 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/v1/group")
 public class KahootGroupController {
@@ -42,8 +46,6 @@ public class KahootGroupController {
     @Autowired
     IPresentationService presentationService;
 
-    @Value("${kahoot.clone.fe}")
-    String fehost;
 
     // Create group
     @PostMapping()
@@ -99,8 +101,12 @@ public class KahootGroupController {
 
     @PreAuthorize("@groupRole.isOwner(authentication, #groupId) or @groupRole.isCoOwner(authentication, #groupId)")
     @PostMapping("/{groupId}/invitation")
-    public ResponseEntity<ResponseObject<InvitationResponse>> createInvitation(@PathVariable int groupId) {
+    public ResponseEntity<ResponseObject<InvitationResponse>> createInvitation(@PathVariable int groupId, HttpServletRequest httpRequest) {
         ResponseObject<InvitationResponse> invitationRet = invitationService.createInvitation(groupId);
+
+        String fehost = httpRequest.getHeader("origin");
+        invitationRet.getObject().setInvitationLink(LinkUtils.buildInvitationLink(invitationRet.getObject().getCode(),
+                fehost));
         return invitationRet.createResponse();
     }
 
@@ -114,7 +120,8 @@ public class KahootGroupController {
     @PreAuthorize("@groupRole.isOwner(authentication, #groupId) or @groupRole.isCoOwner(authentication, #groupId)")
     @PostMapping("/{groupId}/invitation/emails")
     public ResponseEntity<ResponseObject<InvitationResponse>> sendInviteEmail(@PathVariable int groupId,
-                                                          @RequestBody EmailInvitationRequest emailInvitationRequest) {
+                                                                              @RequestBody EmailInvitationRequest emailInvitationRequest,
+                                                                              HttpServletRequest httpRequest) {
         int userId = (int) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
         ResponseObject<InvitationResponse> invitationRet = invitationService.createInvitation(groupId);
@@ -125,6 +132,7 @@ public class KahootGroupController {
         if (ErrorUtils.isFail(userRet.getErrorCode()))
             return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
 
+        String fehost = httpRequest.getHeader("origin");
         for (String email : emailInvitationRequest.getEmails()) {
             String template = EmailUtils.
                     buildInvitationTemplate(fehost, userRet.getObject().getEmail(),
@@ -148,7 +156,7 @@ public class KahootGroupController {
             "or @groupRole.isCoOwner(authentication, #groupId) " +
             "or @groupRole.isMember(authentication, #groupId)")
     @GetMapping("/{groupId}/presentation")
-    public ResponseEntity<ResponseObject<List<PresentationResponse>>> getPresentationsOfGroup (@PathVariable int groupId){
+    public ResponseEntity<ResponseObject<List<PresentationResponse>>> getPresentationsOfGroup(@PathVariable int groupId) {
         ResponseObject<List<PresentationResponse>> presentationRes = presentationService.getPresentationsOfGroup(groupId);
         return presentationRes.createResponse();
     }

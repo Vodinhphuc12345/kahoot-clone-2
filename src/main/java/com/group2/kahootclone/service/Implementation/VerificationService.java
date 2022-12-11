@@ -6,8 +6,10 @@ import com.group2.kahootclone.model.RefreshToken;
 import com.group2.kahootclone.model.User;
 import com.group2.kahootclone.model.Verification;
 import com.group2.kahootclone.object.Request.authController.VerificationRequest;
+import com.group2.kahootclone.object.Response.authController.LoginResponse;
 import com.group2.kahootclone.object.Response.authController.TokenResponse;
 import com.group2.kahootclone.object.Response.authController.VerificationResponse;
+import com.group2.kahootclone.object.Response.meController.UserResponse;
 import com.group2.kahootclone.object.ResponseObject;
 import com.group2.kahootclone.reposibility.RefreshTokenRepository;
 import com.group2.kahootclone.reposibility.UserRepository;
@@ -53,12 +55,12 @@ public class VerificationService implements IVerificationService {
 
 
     @Override
-    public ResponseObject<TokenResponse> checkAndVerifyVerification(VerificationRequest verificationRequest) {
+    public ResponseObject<LoginResponse> checkAndVerifyVerification(VerificationRequest verificationRequest) {
 
-        ResponseObject<TokenResponse> ret = new ResponseObject<>();
+        ResponseObject<LoginResponse> ret = new ResponseObject<>();
         try {
             Optional<Verification> verificationRet = verificationRepo.findById(verificationRequest.getVerificationId());
-            Verification verification = verificationRet.isEmpty() ? null : verificationRet.get();
+            Verification verification = verificationRet.orElse(null);
 
             //build resource not found
             if (verification == null) {
@@ -86,7 +88,7 @@ public class VerificationService implements IVerificationService {
             //save refresh token
             refreshTokenRepository.save(RefreshToken.builder().token(refresh_token).build());
 
-            ret.setObject(TokenResponse.fromStrings(access_token, refresh_token));
+            ret.setObject(LoginResponse.fromUserAndToken(user, access_token, refresh_token));
         } catch (Exception exception) {
             log.error(exception.getMessage(), exception);
             ret.buildException(exception.getMessage());
