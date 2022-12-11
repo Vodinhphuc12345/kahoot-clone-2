@@ -20,23 +20,21 @@ public class SlideController {
     ISlideService slideService;
 
     @PreAuthorize("@presentationRole.isCreator(authentication, #presentationId) " +
-            "or @presentationRole.isSharingCreator(authentication, #presentationId)")
+            "or @presentationRole.isSupporter(authentication, #presentationId)")
     @GetMapping("")
     public ResponseEntity<ResponseObject<List<SlideResponse>>> getSlideOfPresentation(@PathVariable int presentationId) {
         ResponseObject<List<SlideResponse>> presentationRes = slideService.getSlidesOfPresentation(presentationId);
         return presentationRes.createResponse();
     }
 
-    @PreAuthorize("@presentationRole.isCreator(authentication, #presentationId) " +
-            "or @presentationRole.isSharingCreator(authentication, #presentationId)")
+    @PreAuthorize("@presentationRole.isCreator(authentication, #presentationId) ")
     @PostMapping("")
     public ResponseEntity<ResponseObject<SlideResponse>> createSlide(@PathVariable int presentationId, @RequestBody SlideRequest request) {
         ResponseObject<SlideResponse> slideRet = slideService.createSlide(presentationId, request);
         return slideRet.createResponse();
     }
 
-    @PreAuthorize("@presentationRole.isCreator(authentication, #presentationId) " +
-            "or @presentationRole.isSharingCreator(authentication, #presentationId)")
+    @PreAuthorize("@presentationRole.isCreator(authentication, #presentationId) ")
     @PutMapping("/{slideId}")
     public ResponseEntity<ResponseObject<SlideResponse>> updateSlide(@PathVariable int presentationId,
                                                                      @PathVariable int slideId,
@@ -46,7 +44,7 @@ public class SlideController {
     }
 
     @PreAuthorize("@presentationRole.isCreator(authentication, #presentationId) " +
-            "or @presentationRole.isSharingCreator(authentication, #presentationId)")
+            "or @presentationRole.isSupporter(authentication, #presentationId)")
     @GetMapping("/{slideId}")
     public ResponseEntity<ResponseObject<SlideResponse>> getSlide(@PathVariable int presentationId,
                                                                   @PathVariable int slideId) {
@@ -54,8 +52,7 @@ public class SlideController {
         return slideRet.createResponse();
     }
 
-    @PreAuthorize("@presentationRole.isCreator(authentication, #presentationId) " +
-            "or @presentationRole.isSharingCreator(authentication, #presentationId)")
+    @PreAuthorize("@presentationRole.isCreator(authentication, #presentationId) ")
     @DeleteMapping("/{slideId}")
     public ResponseEntity<ResponseObject<Boolean>> deleteSlide(@PathVariable int presentationId,
                                                                @PathVariable int slideId) {
@@ -68,13 +65,6 @@ public class SlideController {
     @GetMapping("/presenting")
     public ResponseEntity<ResponseObject<SlideResponse>> getPresentingSlide(@PathVariable int presentationId) {
         ResponseObject<SlideResponse> slideRet = slideService.getPresentingSlide(presentationId);
-        return slideRet.createResponse();
-    }
-
-    // this is for GA02
-    @GetMapping("/presenting/ga02")
-    public ResponseEntity<ResponseObject<SlideResponse>> getPresentSlideForGA02(@PathVariable int presentationId) {
-        ResponseObject<SlideResponse> slideRet = slideService.getPresentingSlideGA02(presentationId);
         return slideRet.createResponse();
     }
 }

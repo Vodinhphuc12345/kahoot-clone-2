@@ -1,6 +1,6 @@
 package com.group2.kahootclone.object.Response.authController;
 
-import com.group2.kahootclone.model.Verification;
+import com.group2.kahootclone.model.auth.Verification;
 import com.group2.kahootclone.object.Response.meController.UserResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

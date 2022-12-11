@@ -1,6 +1,6 @@
 package com.group2.kahootclone.reposibility;
 
-import com.group2.kahootclone.model.Slide;
+import com.group2.kahootclone.model.presentation.Slide;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

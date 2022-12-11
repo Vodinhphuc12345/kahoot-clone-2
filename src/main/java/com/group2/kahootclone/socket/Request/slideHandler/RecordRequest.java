@@ -1,9 +1,8 @@
 package com.group2.kahootclone.socket.Request.slideHandler;
 
 import com.group2.kahootclone.Utils.MapperUtil;
-import com.group2.kahootclone.model.Record;
-import com.group2.kahootclone.model.RecordId;
-import com.group2.kahootclone.socket.Request.MetaData;
+import com.group2.kahootclone.model.presentation.record.Record;
+import com.group2.kahootclone.model.presentation.record.RecordId;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

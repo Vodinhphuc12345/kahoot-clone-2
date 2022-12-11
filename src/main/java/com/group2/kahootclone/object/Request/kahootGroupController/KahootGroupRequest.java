@@ -1,12 +1,11 @@
 package com.group2.kahootclone.object.Request.kahootGroupController;
 
 import com.group2.kahootclone.Utils.MapperUtil;
-import com.group2.kahootclone.model.KahootGroup;
+import com.group2.kahootclone.model.group.KahootGroup;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
-import org.modelmapper.ModelMapper;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;

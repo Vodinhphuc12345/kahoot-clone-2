@@ -1,12 +1,12 @@
-package com.group2.kahootclone.model;
+package com.group2.kahootclone.model.auth;
 
+import com.group2.kahootclone.model.BaseModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Data
@@ -15,17 +15,13 @@ import javax.persistence.Table;
 @SuperBuilder
 @Entity
 @Table
-public class Verification extends BaseModel {
-    private String code;
-    private long timeExpired;
-    @ManyToOne
-    private User user;
+public class RefreshToken extends BaseModel {
+    private String token;
 
     @Override
     public String toString() {
-        return "Verification{" +
-                "code='" + code + '\'' +
-                ", timeExpired=" + timeExpired +
+        return "RefreshToken{" +
+                "token='" + token + '\'' +
                 ", id=" + id +
                 ", dateCreated=" + dateCreated +
                 ", dateUpdated=" + dateUpdated +

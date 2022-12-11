@@ -2,7 +2,11 @@ package com.group2.kahootclone.service.Implementation;
 
 import com.group2.kahootclone.constant.ErrorCodes;
 import com.group2.kahootclone.mapper.SlideMapper;
-import com.group2.kahootclone.model.*;
+import com.group2.kahootclone.model.auth.User;
+import com.group2.kahootclone.model.presentation.Presentation;
+import com.group2.kahootclone.model.presentation.record.Record;
+import com.group2.kahootclone.model.presentation.record.RecordId;
+import com.group2.kahootclone.model.presentation.Slide;
 import com.group2.kahootclone.object.Request.slideController.SlideRequest;
 import com.group2.kahootclone.socket.Request.slideHandler.RecordRequest;
 import com.group2.kahootclone.object.Response.slideController.SlideResponse;

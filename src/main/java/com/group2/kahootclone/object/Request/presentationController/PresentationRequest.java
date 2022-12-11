@@ -1,7 +1,7 @@
 package com.group2.kahootclone.object.Request.presentationController;
 
 import com.group2.kahootclone.Utils.MapperUtil;
-import com.group2.kahootclone.model.Presentation;
+import com.group2.kahootclone.model.presentation.Presentation;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

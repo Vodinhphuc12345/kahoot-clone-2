@@ -155,9 +155,18 @@ public class KahootGroupController {
     @PreAuthorize("@groupRole.isOwner(authentication, #groupId) " +
             "or @groupRole.isCoOwner(authentication, #groupId) " +
             "or @groupRole.isMember(authentication, #groupId)")
-    @GetMapping("/{groupId}/presentation")
-    public ResponseEntity<ResponseObject<List<PresentationResponse>>> getPresentationsOfGroup(@PathVariable int groupId) {
-        ResponseObject<List<PresentationResponse>> presentationRes = presentationService.getPresentationsOfGroup(groupId);
+    @GetMapping("/{groupId}/presentation/presented")
+    public ResponseEntity<ResponseObject<List<PresentationResponse>>> getPresentedPresentationsOfGroup(@PathVariable int groupId) {
+        ResponseObject<List<PresentationResponse>> presentationRes = presentationService.getPresentedPresentationsOfGroup(groupId);
+        return presentationRes.createResponse();
+    }
+    //list presentations of group
+    @PreAuthorize("@groupRole.isOwner(authentication, #groupId) " +
+            "or @groupRole.isCoOwner(authentication, #groupId) " +
+            "or @groupRole.isMember(authentication, #groupId)")
+    @GetMapping("/{groupId}/presentation/presenting")
+    public ResponseEntity<ResponseObject<List<PresentationResponse>>> getPresentingPresentationsOfGroup(@PathVariable int groupId) {
+        ResponseObject<List<PresentationResponse>> presentationRes = presentationService.getPresentingPresentationsOfGroup(groupId);
         return presentationRes.createResponse();
     }
 }

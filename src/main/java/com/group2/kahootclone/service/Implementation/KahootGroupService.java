@@ -2,9 +2,9 @@ package com.group2.kahootclone.service.Implementation;
 
 import com.group2.kahootclone.constant.ErrorCodes;
 import com.group2.kahootclone.mapper.GroupMapper;
-import com.group2.kahootclone.model.KahootGroup;
-import com.group2.kahootclone.model.User;
-import com.group2.kahootclone.model.UserKahootGroup;
+import com.group2.kahootclone.model.group.KahootGroup;
+import com.group2.kahootclone.model.auth.User;
+import com.group2.kahootclone.model.group.UserKahootGroup;
 import com.group2.kahootclone.object.Request.kahootGroupController.AssignRoleRequest;
 import com.group2.kahootclone.object.Request.kahootGroupController.KahootGroupRequest;
 import com.group2.kahootclone.object.Response.groupController.KahootGroupResponse;

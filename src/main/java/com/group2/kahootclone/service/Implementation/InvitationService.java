@@ -2,10 +2,10 @@ package com.group2.kahootclone.service.Implementation;
 
 import com.group2.kahootclone.constant.ErrorCodes;
 import com.group2.kahootclone.constant.ExpiredTimes;
-import com.group2.kahootclone.model.Invitation;
-import com.group2.kahootclone.model.KahootGroup;
-import com.group2.kahootclone.model.User;
-import com.group2.kahootclone.model.UserKahootGroup;
+import com.group2.kahootclone.model.group.Invitation;
+import com.group2.kahootclone.model.group.KahootGroup;
+import com.group2.kahootclone.model.auth.User;
+import com.group2.kahootclone.model.group.UserKahootGroup;
 import com.group2.kahootclone.object.Response.groupController.InvitationResponse;
 import com.group2.kahootclone.object.Response.groupController.KahootGroupResponse;
 import com.group2.kahootclone.object.ResponseObject;

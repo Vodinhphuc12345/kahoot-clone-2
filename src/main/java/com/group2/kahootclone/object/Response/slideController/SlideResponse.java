@@ -2,7 +2,7 @@ package com.group2.kahootclone.object.Response.slideController;
 
 import com.group2.kahootclone.Utils.MapperUtil;
 import com.group2.kahootclone.controller.SlideController;
-import com.group2.kahootclone.model.Slide;
+import com.group2.kahootclone.model.presentation.Slide;
 import com.group2.kahootclone.object.Response.BaseResponse;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,10 +25,11 @@ public class SlideResponse extends RepresentationModel<BaseResponse> {
     List<String> options;
     String answer;
     boolean isPresenting;
+    String type;
     List<RecordResponse> userRecords;
 
     public static SlideResponse fromSlide(Slide slide) {
-        if (slide == null) return  null;
+        if (slide == null) return null;
         SlideResponse response = MapperUtil.INSTANCE.map(slide, SlideResponse.class);
         Link link = linkTo(methodOn(SlideController.class).getSlide(slide.getPresentation().getId(), slide.getId())).withSelfRel();
         response.add(link);

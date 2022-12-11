@@ -1,5 +1,7 @@
-package com.group2.kahootclone.model;
+package com.group2.kahootclone.model.presentation;
 
+import com.group2.kahootclone.model.BaseModel;
+import com.group2.kahootclone.model.presentation.record.Record;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,6 +20,7 @@ public class Slide extends BaseModel {
     String content;
     String answer;
     boolean isPresenting;
+    String type;
 
     //options
     @ElementCollection

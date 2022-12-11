@@ -1,7 +1,7 @@
 package com.group2.kahootclone.service.Interface;
 
 
-import com.group2.kahootclone.model.User;
+import com.group2.kahootclone.model.auth.User;
 import com.group2.kahootclone.object.Request.authController.VerificationRequest;
 import com.group2.kahootclone.object.Response.authController.LoginResponse;
 import com.group2.kahootclone.object.Response.authController.VerificationResponse;

@@ -1,7 +1,7 @@
 package com.group2.kahootclone.object.Request.authController;
 
 import com.group2.kahootclone.Utils.MapperUtil;
-import com.group2.kahootclone.model.User;
+import com.group2.kahootclone.model.auth.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

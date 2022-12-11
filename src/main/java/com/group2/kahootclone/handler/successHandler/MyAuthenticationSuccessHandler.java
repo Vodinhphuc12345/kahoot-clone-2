@@ -1,12 +1,11 @@
 package com.group2.kahootclone.handler.successHandler;
 
 import com.group2.kahootclone.Utils.JwtUtils;
-import com.group2.kahootclone.model.RefreshToken;
-import com.group2.kahootclone.model.User;
+import com.group2.kahootclone.model.auth.RefreshToken;
+import com.group2.kahootclone.model.auth.User;
 import com.group2.kahootclone.reposibility.RefreshTokenRepository;
 import com.group2.kahootclone.reposibility.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;

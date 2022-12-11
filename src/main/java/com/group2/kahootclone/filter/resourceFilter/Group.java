@@ -1,8 +1,8 @@
 package com.group2.kahootclone.filter.resourceFilter;
 
-import com.group2.kahootclone.model.KahootGroup;
-import com.group2.kahootclone.model.User;
-import com.group2.kahootclone.model.UserKahootGroup;
+import com.group2.kahootclone.model.group.KahootGroup;
+import com.group2.kahootclone.model.auth.User;
+import com.group2.kahootclone.model.group.UserKahootGroup;
 import com.group2.kahootclone.reposibility.KahootGroupRepository;
 import com.group2.kahootclone.reposibility.UserKahootGroupRepository;
 import com.group2.kahootclone.reposibility.UserRepository;

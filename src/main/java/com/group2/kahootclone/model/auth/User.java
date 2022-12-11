@@ -1,6 +1,12 @@
-package com.group2.kahootclone.model;
+package com.group2.kahootclone.model.auth;
 
 import com.group2.kahootclone.constant.Providers;
+import com.group2.kahootclone.model.BaseModel;
+import com.group2.kahootclone.model.presentation.Presentation;
+import com.group2.kahootclone.model.presentation.chat.Chat;
+import com.group2.kahootclone.model.presentation.question.Question;
+import com.group2.kahootclone.model.presentation.record.Record;
+import com.group2.kahootclone.model.group.UserKahootGroup;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -48,6 +54,22 @@ public class User extends BaseModel {
             orphanRemoval = true
     )
     List<Presentation> presentations;
+
+    //list questions
+    @OneToMany(
+            mappedBy = "user",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    List<Question> questions;
+
+    //list chats
+    @OneToMany(
+            mappedBy = "user",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    List<Chat> chats;
 
     @Override
     public String toString() {

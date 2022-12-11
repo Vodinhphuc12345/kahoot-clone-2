@@ -1,11 +1,14 @@
-package com.group2.kahootclone.model;
+package com.group2.kahootclone.model.auth;
 
+import com.group2.kahootclone.model.BaseModel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Data
 @NoArgsConstructor
@@ -13,18 +16,17 @@ import javax.persistence.*;
 @SuperBuilder
 @Entity
 @Table
-public class Invitation extends BaseModel{
+public class Verification extends BaseModel {
     private String code;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="kahoot_group_id")
-    private KahootGroup kahootGroup;
-    private long expiredTime;
+    private long timeExpired;
+    @ManyToOne
+    private User user;
 
     @Override
     public String toString() {
-        return "Invitation{" +
+        return "Verification{" +
                 "code='" + code + '\'' +
-                ", expiredTime=" + expiredTime +
+                ", timeExpired=" + timeExpired +
                 ", id=" + id +
                 ", dateCreated=" + dateCreated +
                 ", dateUpdated=" + dateUpdated +

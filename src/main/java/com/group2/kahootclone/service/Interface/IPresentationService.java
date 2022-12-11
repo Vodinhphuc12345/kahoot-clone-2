@@ -13,7 +13,9 @@ public interface IPresentationService {
 
     ResponseObject<Boolean> deletePresentation(int presentationId);
 
-    ResponseObject<List<PresentationResponse>> getPresentationsOfGroup(int groupId);
+    ResponseObject<List<PresentationResponse>> getPresentedPresentationsOfGroup(int groupId);
+
+    ResponseObject<List<PresentationResponse>> getPresentingPresentationsOfGroup(int groupId);
 
     ResponseObject<List<PresentationResponse>> getPresentationsOfUser(int userId);
 

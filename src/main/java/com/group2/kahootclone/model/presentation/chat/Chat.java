@@ -1,5 +1,7 @@
-package com.group2.kahootclone.model;
+package com.group2.kahootclone.model.presentation.chat;
 
+import com.group2.kahootclone.model.auth.User;
+import com.group2.kahootclone.model.presentation.Presentation;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,11 +15,11 @@ import javax.persistence.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Record {
+public class Chat {
     @EmbeddedId
-    private RecordId recordId = new RecordId();
-    String answer;
-    boolean correct;
+    private ChatId chatId = new ChatId();
+    String content;
+
     protected long dateCreated;
     protected long dateUpdated;
 
@@ -26,10 +28,10 @@ public class Record {
     @MapsId("userId")
     private User user;
 
-    //slide
+    //presentation
     @ManyToOne(fetch = FetchType.LAZY)
-    @MapsId("slideId")
-    private Slide slide;
+    @MapsId("presentationId")
+    private Presentation presentation;
 
     @PreUpdate
     public void onUpdate() {
@@ -43,9 +45,8 @@ public class Record {
 
     @Override
     public String toString() {
-        return "Record{" +
-                ", answer='" + answer + '\'' +
-                ", correct=" + correct +
+        return "Question{" +
+                "content='" + content + '\'' +
                 ", dateCreated=" + dateCreated +
                 ", dateUpdated=" + dateUpdated +
                 '}';

@@ -1,5 +1,7 @@
-package com.group2.kahootclone.model;
+package com.group2.kahootclone.model.group;
 
+import com.group2.kahootclone.model.BaseModel;
+import com.group2.kahootclone.model.presentation.Presentation;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,14 +27,23 @@ public class KahootGroup extends BaseModel {
     )
     List<UserKahootGroup> userKahootGroups;
 
-    //list presentation
+    //list presenting presentation
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(
-            name = "kahoot_group_presentation",
+            name = "presenting_presentation_groups",
             joinColumns = @JoinColumn(name = "group_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "presentation_id", referencedColumnName = "id")
     )
-    List<Presentation> presentations;
+    List<Presentation> presentingPresentations;
+
+    //list presented presentation
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "presented_presentation_groups",
+            joinColumns = @JoinColumn(name = "group_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "presentation_id", referencedColumnName = "id")
+    )
+    List<Presentation> presentedPresentations;
 
     // list invitation
     @OneToMany(mappedBy = "kahootGroup", cascade = CascadeType.ALL)

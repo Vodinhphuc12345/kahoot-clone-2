@@ -1,8 +1,8 @@
 package com.group2.kahootclone.filter.resourceFilter;
 
-import com.group2.kahootclone.model.KahootGroup;
-import com.group2.kahootclone.model.User;
-import com.group2.kahootclone.model.UserKahootGroup;
+import com.group2.kahootclone.model.group.KahootGroup;
+import com.group2.kahootclone.model.auth.User;
+import com.group2.kahootclone.model.group.UserKahootGroup;
 import com.group2.kahootclone.reposibility.KahootGroupRepository;
 import com.group2.kahootclone.reposibility.PresentationRepository;
 import com.group2.kahootclone.reposibility.UserKahootGroupRepository;
@@ -36,25 +36,25 @@ public class Presentation {
     }
 
 
-    public com.group2.kahootclone.model.Presentation getPresentation(int presentationId) {
-        Optional<com.group2.kahootclone.model.Presentation> presentationRes = presentationRepository.findById(presentationId);
+    public com.group2.kahootclone.model.presentation.Presentation getPresentation(int presentationId) {
+        Optional<com.group2.kahootclone.model.presentation.Presentation> presentationRes = presentationRepository.findById(presentationId);
         return presentationRes.orElse(null);
     }
 
     public boolean isCreator(Authentication authentication, int presentationId) {
-        com.group2.kahootclone.model.Presentation presentation = getPresentation(presentationId);
+        com.group2.kahootclone.model.presentation.Presentation presentation = getPresentation(presentationId);
         if (presentation == null) return false;
         int userId = (int) authentication.getPrincipal();
         return userId == presentation.getUser().getId();
     }
 
-    public boolean isSharingCreator(Authentication authentication, int presentationId) {
-        com.group2.kahootclone.model.Presentation presentation = getPresentation(presentationId);
-        if (presentation == null || !(presentation.getKahootGroup() == null || presentation.getKahootGroup().isEmpty()))
+    public boolean isSupporter(Authentication authentication, int presentationId) {
+        com.group2.kahootclone.model.presentation.Presentation presentation = getPresentation(presentationId);
+        if (presentation == null || !(presentation.getPresentingGroups() == null || presentation.getPresentingGroups().isEmpty()))
             return false;
         int userId = (int) authentication.getPrincipal();
 
-        for (KahootGroup kahootGroup : presentation.getKahootGroup()) {
+        for (KahootGroup kahootGroup : presentation.getPresentingGroups()) {
             UserKahootGroup userKahootGroup = getUserKahootGroup(userId, kahootGroup.getId());
             if (userKahootGroup.getRole().equals(OWNER.name()) || userKahootGroup.getRole().equals(CO_OWNER.name()))
                 return true;
@@ -63,12 +63,12 @@ public class Presentation {
     }
 
     public boolean isParticipant(Authentication authentication, int presentationId) {
-        com.group2.kahootclone.model.Presentation presentation = getPresentation(presentationId);
+        com.group2.kahootclone.model.presentation.Presentation presentation = getPresentation(presentationId);
         if (presentation == null) return false;
-        if (presentation.getKahootGroup() == null || presentation.getKahootGroup().isEmpty()) return true;
+        if (presentation.getPresentingGroups() == null || presentation.getPresentingGroups().isEmpty()) return true;
         int userId = (int) authentication.getPrincipal();
 
-        for (KahootGroup kahootGroup : presentation.getKahootGroup()) {
+        for (KahootGroup kahootGroup : presentation.getPresentingGroups()) {
             UserKahootGroup userKahootGroup = getUserKahootGroup(userId, kahootGroup.getId());
             if (userKahootGroup != null)
                 return true;

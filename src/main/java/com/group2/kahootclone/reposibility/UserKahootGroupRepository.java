@@ -1,9 +1,9 @@
 package com.group2.kahootclone.reposibility;
 
-import com.group2.kahootclone.model.KahootGroup;
-import com.group2.kahootclone.model.User;
-import com.group2.kahootclone.model.UserKahootGroup;
-import com.group2.kahootclone.model.UserKahootGroupId;
+import com.group2.kahootclone.model.group.KahootGroup;
+import com.group2.kahootclone.model.auth.User;
+import com.group2.kahootclone.model.group.UserKahootGroup;
+import com.group2.kahootclone.model.group.UserKahootGroupId;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

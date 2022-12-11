@@ -1,4 +1,4 @@
-package com.group2.kahootclone.model;
+package com.group2.kahootclone.model.presentation.chat;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -6,28 +6,22 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
-public class UserKahootGroupId
-        implements Serializable {
-
+public class ChatId implements Serializable {
     @Column(name = "user_id")
     private int userId;
 
-    @Column(name = "kahoot_group_id")
-    private int kahootGroupId;
+    @Column(name = "presentation_id")
+    private int presentationId;
 
-    public UserKahootGroupId(
+    public ChatId(
             int userId,
-            int kahootGroupId) {
+            int presentationId) {
         this.userId = userId;
-        this.kahootGroupId = kahootGroupId;
+        this.presentationId = presentationId;
     }
 
-    public UserKahootGroupId() {
-
+    public ChatId() {
     }
-
-    //Getters omitted for brevity
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -35,14 +29,13 @@ public class UserKahootGroupId
         if (o == null || getClass() != o.getClass())
             return false;
 
-        UserKahootGroupId that = (UserKahootGroupId) o;
+        ChatId that = (ChatId) o;
         return Objects.equals(userId, that.userId) &&
-                Objects.equals(kahootGroupId, that.kahootGroupId);
+                Objects.equals(presentationId, that.presentationId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, kahootGroupId);
+        return Objects.hash(userId, presentationId);
     }
 }
-

@@ -1,6 +1,6 @@
 package com.group2.kahootclone.mapper;
 
-import com.group2.kahootclone.model.KahootGroup;
+import com.group2.kahootclone.model.group.KahootGroup;
 import com.group2.kahootclone.object.Request.kahootGroupController.KahootGroupRequest;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;

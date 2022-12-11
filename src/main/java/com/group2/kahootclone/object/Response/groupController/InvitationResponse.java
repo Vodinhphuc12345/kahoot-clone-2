@@ -1,8 +1,7 @@
 package com.group2.kahootclone.object.Response.groupController;
 
-import com.group2.kahootclone.Utils.LinkUtils;
 import com.group2.kahootclone.Utils.MapperUtil;
-import com.group2.kahootclone.model.Invitation;
+import com.group2.kahootclone.model.group.Invitation;
 import com.group2.kahootclone.object.Response.BaseResponse;
 import lombok.Builder;
 import lombok.Data;

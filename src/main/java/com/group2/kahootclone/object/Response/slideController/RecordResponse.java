@@ -1,6 +1,6 @@
 package com.group2.kahootclone.object.Response.slideController;
 
-import com.group2.kahootclone.model.Record;
+import com.group2.kahootclone.model.presentation.record.Record;
 import lombok.Builder;
 import lombok.Data;
 

@@ -2,14 +2,12 @@ package com.group2.kahootclone.service.Implementation;
 
 import com.group2.kahootclone.Utils.JwtUtils;
 import com.group2.kahootclone.constant.ExpiredTimes;
-import com.group2.kahootclone.model.RefreshToken;
-import com.group2.kahootclone.model.User;
-import com.group2.kahootclone.model.Verification;
+import com.group2.kahootclone.model.auth.RefreshToken;
+import com.group2.kahootclone.model.auth.User;
+import com.group2.kahootclone.model.auth.Verification;
 import com.group2.kahootclone.object.Request.authController.VerificationRequest;
 import com.group2.kahootclone.object.Response.authController.LoginResponse;
-import com.group2.kahootclone.object.Response.authController.TokenResponse;
 import com.group2.kahootclone.object.Response.authController.VerificationResponse;
-import com.group2.kahootclone.object.Response.meController.UserResponse;
 import com.group2.kahootclone.object.ResponseObject;
 import com.group2.kahootclone.reposibility.RefreshTokenRepository;
 import com.group2.kahootclone.reposibility.UserRepository;

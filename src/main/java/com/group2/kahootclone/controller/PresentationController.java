@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 public class PresentationController {
     @Autowired
     IPresentationService presentationService;
-    @PreAuthorize("@presentationRole.isCreator(authentication, #presentationId) or @presentationRole.isSharingCreator(authentication, #presentationId)")
+    @PreAuthorize("@presentationRole.isCreator(authentication, #presentationId) or @presentationRole.supporter(authentication, #presentationId)")
     @PutMapping ("/{presentationId}")
     public ResponseEntity<ResponseObject<PresentationResponse>> updatePresentation (@PathVariable int presentationId
             , @RequestBody PresentationRequest request){

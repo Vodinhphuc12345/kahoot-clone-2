@@ -1,9 +1,9 @@
 package com.group2.kahootclone.service.Implementation;
 
 import com.group2.kahootclone.mapper.PresentationMapper;
-import com.group2.kahootclone.model.KahootGroup;
-import com.group2.kahootclone.model.Presentation;
-import com.group2.kahootclone.model.User;
+import com.group2.kahootclone.model.group.KahootGroup;
+import com.group2.kahootclone.model.presentation.Presentation;
+import com.group2.kahootclone.model.auth.User;
 import com.group2.kahootclone.object.Request.presentationController.PresentationRequest;
 import com.group2.kahootclone.object.Response.presentationController.PresentationResponse;
 import com.group2.kahootclone.object.ResponseObject;
@@ -111,7 +111,7 @@ public class PresentationService implements IPresentationService {
     }
 
     @Override
-    public ResponseObject<List<PresentationResponse>> getPresentationsOfGroup(int groupId) {
+    public ResponseObject<List<PresentationResponse>> getPresentedPresentationsOfGroup(int groupId) {
         ResponseObject<List<PresentationResponse>> ret = new ResponseObject<>();
         try {
             //group
@@ -124,7 +124,34 @@ public class PresentationService implements IPresentationService {
             }
 
             //delete presentation
-            List<PresentationResponse> list = group.getPresentations()
+            List<PresentationResponse> list = group.getPresentedPresentations()
+                    .stream()
+                    .map(PresentationResponse::fromPresentation)
+                    .collect(Collectors.toList());
+            //build success
+            ret.setObject(list);
+        } catch (Exception exception) {
+            log.error(exception.getMessage(), exception);
+            ret.buildException(exception.getMessage());
+        }
+        return ret;
+    }
+
+    @Override
+    public ResponseObject<List<PresentationResponse>> getPresentingPresentationsOfGroup(int groupId) {
+        ResponseObject<List<PresentationResponse>> ret = new ResponseObject<>();
+        try {
+            //group
+            Optional<KahootGroup> groupRet = groupRepository.findById(groupId);
+            KahootGroup group = groupRet.orElse(null);
+
+            if (group == null) {
+                ret.buildResourceNotFound("Group not found.");
+                return ret;
+            }
+
+            //delete presentation
+            List<PresentationResponse> list = group.getPresentingPresentations()
                     .stream()
                     .map(PresentationResponse::fromPresentation)
                     .collect(Collectors.toList());

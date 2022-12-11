@@ -1,9 +1,4 @@
-package com.group2.kahootclone.model;
-
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+package com.group2.kahootclone.model.group;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
@@ -11,23 +6,28 @@ import java.io.Serializable;
 import java.util.Objects;
 
 @Embeddable
-public class RecordId implements Serializable {
+public class UserKahootGroupId
+        implements Serializable {
 
     @Column(name = "user_id")
     private int userId;
 
-    @Column(name = "slide_id")
-    private int slideId;
+    @Column(name = "kahoot_group_id")
+    private int kahootGroupId;
 
-    public RecordId(
+    public UserKahootGroupId(
             int userId,
-            int slideId) {
+            int kahootGroupId) {
         this.userId = userId;
-        this.slideId = slideId;
+        this.kahootGroupId = kahootGroupId;
     }
 
-    public RecordId() {
+    public UserKahootGroupId() {
+
     }
+
+    //Getters omitted for brevity
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -35,13 +35,14 @@ public class RecordId implements Serializable {
         if (o == null || getClass() != o.getClass())
             return false;
 
-        RecordId that = (RecordId) o;
+        UserKahootGroupId that = (UserKahootGroupId) o;
         return Objects.equals(userId, that.userId) &&
-                Objects.equals(slideId, that.slideId);
+                Objects.equals(kahootGroupId, that.kahootGroupId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId, slideId);
+        return Objects.hash(userId, kahootGroupId);
     }
 }
+
