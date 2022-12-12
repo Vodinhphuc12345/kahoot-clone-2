@@ -10,8 +10,14 @@ public class LinkUtils {
                 verification.getCode());
     }
 
-    public static String buildInvitationLink(String code, String fehost) {
+    public static String buildGroupInvitationLink(String code, String fehost) {
         return String.format("%s/invitation?code=%s",
+                fehost,
+                code);
+    }
+
+    public static String buildPresentationCollaboratorInvitationLink(String code, String fehost) {
+        return String.format("%s/presentation/collaborator?code=%s",
                 fehost,
                 code);
     }

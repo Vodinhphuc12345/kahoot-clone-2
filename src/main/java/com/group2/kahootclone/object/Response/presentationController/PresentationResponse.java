@@ -19,18 +19,21 @@ public class PresentationResponse extends BaseResponse  {
     String presentationName;
     String roomName;
     String description;
+    String ownerName;
 
     @Builder
-    public PresentationResponse(int id, String presentationName, String description, String roomName, long dateCreated, long dateUpdated) {
+    public PresentationResponse(int id, String presentationName, String description, String roomName, long dateCreated, long dateUpdated, String ownerName) {
         super(dateCreated, dateUpdated);
         this.id = id;
         this.presentationName = presentationName;
         this.description = description;
         this.roomName = roomName;
+        this.ownerName=ownerName;
     }
 
     public static PresentationResponse fromPresentation(Presentation presentation) {
         PresentationResponse response = MapperUtil.INSTANCE.map(presentation, PresentationResponse.class);
+        response.setOwnerName(presentation.getUser().getDisplayName());
         Link link = linkTo(methodOn(PresentationController.class).getPresentation(presentation.getId())).withSelfRel();
         response.add(link);
 

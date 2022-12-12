@@ -13,7 +13,7 @@ public class EmailUtils {
 
     public static String buildInvitationTemplate(String fehost, String usernameFrom, String usernameTo, String code, String groupName) {
         return com.group2.kahootclone.constant.emailTemplate.invitation.TEMPLATE
-                .replaceAll("\\{\\{invitationLink\\}\\}", LinkUtils.buildInvitationLink(code, fehost))
+                .replaceAll("\\{\\{invitationLink\\}\\}", LinkUtils.buildGroupInvitationLink(code, fehost))
                 .replaceAll("\\{\\{usernameFrom\\}\\}", String.valueOf(usernameFrom))
                 .replaceAll("\\{\\{usernameTo\\}\\}", String.valueOf(usernameTo))
                 .replaceAll("\\{\\{group\\}\\}", groupName);

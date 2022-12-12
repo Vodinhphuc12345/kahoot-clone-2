@@ -5,10 +5,13 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PresentSlideRequest {
-    int slideId;
+public class PresentationRequest {
+    int presentationId;
+    List<Integer> groupIds;
 }

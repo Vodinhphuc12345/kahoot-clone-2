@@ -48,6 +48,14 @@ public class Presentation {
         return userId == presentation.getUser().getId();
     }
 
+    public boolean isCollaborator(Authentication authentication, int presentationId) {
+        int userId = (int) authentication.getPrincipal();
+        com.group2.kahootclone.model.presentation.Presentation presentation = getPresentation(presentationId);
+        if (presentation == null) return false;
+        User user = presentation.getCollaborators().stream().filter(c -> c.getId() == userId).findAny().orElse(null);
+        return user != null;
+    }
+
     public boolean isSupporter(Authentication authentication, int presentationId) {
         com.group2.kahootclone.model.presentation.Presentation presentation = getPresentation(presentationId);
         if (presentation == null || !(presentation.getPresentingGroups() == null || presentation.getPresentingGroups().isEmpty()))

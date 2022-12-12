@@ -17,6 +17,7 @@ public class SlideRequest {
     String content;
     List<String> options;
     String answer;
+    String type;
 
     public Slide toSlide() {
         return MapperUtil.INSTANCE.map(this, Slide.class);

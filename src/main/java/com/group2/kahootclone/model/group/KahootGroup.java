@@ -1,6 +1,7 @@
 package com.group2.kahootclone.model.group;
 
 import com.group2.kahootclone.model.BaseModel;
+import com.group2.kahootclone.model.Invitation;
 import com.group2.kahootclone.model.presentation.Presentation;
 import lombok.AllArgsConstructor;
 import lombok.Data;

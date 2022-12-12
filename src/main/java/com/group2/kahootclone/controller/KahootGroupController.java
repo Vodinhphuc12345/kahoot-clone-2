@@ -7,7 +7,6 @@ import com.group2.kahootclone.object.EmailDetails;
 import com.group2.kahootclone.object.Request.kahootGroupController.AssignRoleRequest;
 import com.group2.kahootclone.object.Request.kahootGroupController.EmailInvitationRequest;
 import com.group2.kahootclone.object.Request.kahootGroupController.KahootGroupRequest;
-import com.group2.kahootclone.object.Request.presentationController.PresentationRequest;
 import com.group2.kahootclone.object.Response.groupController.InvitationResponse;
 import com.group2.kahootclone.object.Response.groupController.KahootGroupResponse;
 import com.group2.kahootclone.object.Response.meController.UserResponse;
@@ -16,7 +15,6 @@ import com.group2.kahootclone.object.ResponseObject;
 import com.group2.kahootclone.service.Interface.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -102,10 +100,10 @@ public class KahootGroupController {
     @PreAuthorize("@groupRole.isOwner(authentication, #groupId) or @groupRole.isCoOwner(authentication, #groupId)")
     @PostMapping("/{groupId}/invitation")
     public ResponseEntity<ResponseObject<InvitationResponse>> createInvitation(@PathVariable int groupId, HttpServletRequest httpRequest) {
-        ResponseObject<InvitationResponse> invitationRet = invitationService.createInvitation(groupId);
+        ResponseObject<InvitationResponse> invitationRet = invitationService.createGroupInvitation(groupId);
 
         String fehost = httpRequest.getHeader("origin");
-        invitationRet.getObject().setInvitationLink(LinkUtils.buildInvitationLink(invitationRet.getObject().getCode(),
+        invitationRet.getObject().setInvitationLink(LinkUtils.buildGroupInvitationLink(invitationRet.getObject().getCode(),
                 fehost));
         return invitationRet.createResponse();
     }
@@ -124,7 +122,7 @@ public class KahootGroupController {
                                                                               HttpServletRequest httpRequest) {
         int userId = (int) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
-        ResponseObject<InvitationResponse> invitationRet = invitationService.createInvitation(groupId);
+        ResponseObject<InvitationResponse> invitationRet = invitationService.createGroupInvitation(groupId);
         if (ErrorUtils.isFail(invitationRet.getErrorCode()))
             return invitationRet.createResponse();
 

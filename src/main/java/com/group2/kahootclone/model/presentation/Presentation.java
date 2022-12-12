@@ -1,11 +1,9 @@
 package com.group2.kahootclone.model.presentation;
 
 import com.group2.kahootclone.model.BaseModel;
+import com.group2.kahootclone.model.Invitation;
 import com.group2.kahootclone.model.auth.User;
 import com.group2.kahootclone.model.group.KahootGroup;
-import com.group2.kahootclone.model.presentation.chat.Chat;
-import com.group2.kahootclone.model.presentation.question.Question;
-import com.group2.kahootclone.model.presentation.record.Record;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,6 +11,7 @@ import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -35,7 +34,7 @@ public class Presentation extends BaseModel {
 
     // presented group
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "presentedPresentations")
-    private List<KahootGroup> presentedGroups;
+    private Set<KahootGroup> presentedGroups;
 
     //list slide
     @OneToMany(
@@ -60,6 +59,14 @@ public class Presentation extends BaseModel {
             orphanRemoval = true
     )
     List<Chat> chats;
+
+    // collaborators
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "collaboratedPresentations")
+    private List<User> collaborators;
+
+    // list collaboration invitations
+    @OneToMany(mappedBy = "presentation", cascade = CascadeType.ALL)
+    List<Invitation> invitations;
 
     @Override
     public String toString() {

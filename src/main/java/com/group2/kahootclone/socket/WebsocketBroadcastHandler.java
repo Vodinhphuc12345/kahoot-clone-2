@@ -3,10 +3,12 @@ package com.group2.kahootclone.socket;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.group2.kahootclone.socket.Request.SocketRequest;
-import com.group2.kahootclone.socket.Request.slideHandler.PresentSlideRequest;
+import com.group2.kahootclone.socket.Request.chatHandler.ChatRequest;
+import com.group2.kahootclone.socket.Request.questionHandler.AnswerRequest;
+import com.group2.kahootclone.socket.Request.questionHandler.AskRequest;
+import com.group2.kahootclone.socket.Request.slideHandler.PresentationRequest;
 import com.group2.kahootclone.socket.Request.slideHandler.RecordRequest;
-import com.group2.kahootclone.socket.eventHandlers.RoomHandler;
-import com.group2.kahootclone.socket.eventHandlers.SlideHandler;
+import com.group2.kahootclone.socket.eventHandlers.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -29,6 +31,12 @@ public class WebsocketBroadcastHandler extends TextWebSocketHandler {
     RoomHandler roomHandler;
     @Autowired
     SlideHandler slideHandler;
+    @Autowired
+    PresentationHandler presentationHandler;
+    @Autowired
+    ChatHandler chatHandler;
+    @Autowired
+    QuestionHandler questionHandler;
     List<WebSocketSession> sessions = new CopyOnWriteArrayList<>();
     Map<String, Map<String, Set<WebSocketSession>>> roomMap = new HashMap<>();
 
@@ -51,10 +59,40 @@ public class WebsocketBroadcastHandler extends TextWebSocketHandler {
                             new TypeReference<SocketRequest<RecordRequest>>() {});
                     slideHandler.handleVoteSlide(session, roomMap, voteRequest);
                     break;
-                case PRESENT_SLIDE:
-                    SocketRequest<PresentSlideRequest> presentRequest = new ObjectMapper().readValue(message.getPayload(),
-                            new TypeReference<SocketRequest<PresentSlideRequest>>() {});
-                    slideHandler.handlePresentSlide(session, roomMap, presentRequest);
+                case NEXT_SLIDE:
+                    SocketRequest<PresentationRequest> nextSlideRequest = new ObjectMapper().readValue(message.getPayload(),
+                            new TypeReference<SocketRequest<PresentationRequest>>() {});
+                    presentationHandler.handleNextSlide(session, roomMap, nextSlideRequest);
+                    break;
+                case PREV_SLIDE:
+                    SocketRequest<PresentationRequest> prevSlideRequest = new ObjectMapper().readValue(message.getPayload(),
+                            new TypeReference<SocketRequest<PresentationRequest>>() {});
+                    presentationHandler.handlePrevSlide(session, roomMap, prevSlideRequest);
+                    break;
+                case START:
+                    SocketRequest<PresentationRequest> startPresentationRequest = new ObjectMapper().readValue(message.getPayload(),
+                            new TypeReference<SocketRequest<PresentationRequest>>() {});
+                    presentationHandler.handleStartPresentation(session, roomMap, startPresentationRequest);
+                    break;
+                case END:
+                    SocketRequest<PresentationRequest> endPresentationRequest = new ObjectMapper().readValue(message.getPayload(),
+                            new TypeReference<SocketRequest<PresentationRequest>>() {});
+                    presentationHandler.handleEndPresentation(session, roomMap, endPresentationRequest);
+                    break;
+                case CHAT:
+                    SocketRequest<ChatRequest> chatRequest = new ObjectMapper().readValue(message.getPayload(),
+                            new TypeReference<SocketRequest<ChatRequest>>() {});
+                    chatHandler.handleChat(session, roomMap, chatRequest);
+                    break;
+                case ANSWER_QUESTION:
+                    SocketRequest<AnswerRequest> answerQuestionRequest = new ObjectMapper().readValue(message.getPayload(),
+                            new TypeReference<SocketRequest<AnswerRequest>>() {});
+                    questionHandler.handleAnswerQuestion(session, roomMap, answerQuestionRequest);
+                    break;
+                case ASK_QUESTION:
+                    SocketRequest<AskRequest> askQuestionRequest = new ObjectMapper().readValue(message.getPayload(),
+                            new TypeReference<SocketRequest<AskRequest>>() {});
+                    questionHandler.handleAskQuestion(session, roomMap, askQuestionRequest);
                     break;
                 default:
                     log.error("Invalid message type {}", socketRequest.getMetaData());

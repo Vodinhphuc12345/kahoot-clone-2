@@ -3,8 +3,8 @@ package com.group2.kahootclone.model.auth;
 import com.group2.kahootclone.constant.Providers;
 import com.group2.kahootclone.model.BaseModel;
 import com.group2.kahootclone.model.presentation.Presentation;
-import com.group2.kahootclone.model.presentation.chat.Chat;
-import com.group2.kahootclone.model.presentation.question.Question;
+import com.group2.kahootclone.model.presentation.Chat;
+import com.group2.kahootclone.model.presentation.Question;
 import com.group2.kahootclone.model.presentation.record.Record;
 import com.group2.kahootclone.model.group.UserKahootGroup;
 import lombok.AllArgsConstructor;
@@ -70,6 +70,15 @@ public class User extends BaseModel {
             orphanRemoval = true
     )
     List<Chat> chats;
+
+    //list presentations that is collaborated
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "collaboration",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "presentation_id", referencedColumnName = "id")
+    )
+    List<Presentation> collaboratedPresentations;
 
     @Override
     public String toString() {

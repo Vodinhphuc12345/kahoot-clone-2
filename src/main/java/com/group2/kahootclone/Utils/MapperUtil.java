@@ -6,6 +6,7 @@ public class MapperUtil {
     public final static ModelMapper INSTANCE = new ModelMapper();
     static {
         INSTANCE.getConfiguration().setSkipNullEnabled(true);
+        INSTANCE.getConfiguration().setAmbiguityIgnored(true);
     }
 
 }

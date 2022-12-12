@@ -1,10 +1,9 @@
 package com.group2.kahootclone.reposibility;
 
-import com.group2.kahootclone.model.Invitation;
+import com.group2.kahootclone.model.presentation.Chat;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface InvitationRepository extends JpaRepository<Invitation, Integer> {
-    Invitation findByCode(String code);
+public interface ChatRepository extends JpaRepository<Chat, Integer> {
 }

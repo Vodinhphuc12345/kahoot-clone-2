@@ -82,4 +82,10 @@ public class MeController {
         ResponseObject<List<PresentationResponse>> presentationRes = presentationService.getPresentationsOfUser(userId);
         return presentationRes.createResponse();
     }
+    @GetMapping ("/presentation/collaboration")
+    public  ResponseEntity<ResponseObject<List<PresentationResponse>>> getMyCollaborationPresentation (){
+        int userId = (int) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        ResponseObject<List<PresentationResponse>> presentationRes = presentationService.getCollaborationPresentationsOfUser(userId);
+        return presentationRes.createResponse();
+    }
 }

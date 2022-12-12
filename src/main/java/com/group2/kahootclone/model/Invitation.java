@@ -1,6 +1,8 @@
-package com.group2.kahootclone.model.group;
+package com.group2.kahootclone.model;
 
 import com.group2.kahootclone.model.BaseModel;
+import com.group2.kahootclone.model.group.KahootGroup;
+import com.group2.kahootclone.model.presentation.Presentation;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,6 +21,9 @@ public class Invitation extends BaseModel {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="kahoot_group_id")
     private KahootGroup kahootGroup;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="presentation_id")
+    private Presentation presentation;
     private long expiredTime;
 
     @Override
