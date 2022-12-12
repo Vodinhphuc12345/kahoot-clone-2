@@ -29,21 +29,11 @@ public class KahootGroup extends BaseModel {
     List<UserKahootGroup> userKahootGroups;
 
     //list presenting presentation
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "presenting_presentation_groups",
-            joinColumns = @JoinColumn(name = "group_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "presentation_id", referencedColumnName = "id")
-    )
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "presentingGroups")
     List<Presentation> presentingPresentations;
 
     //list presented presentation
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "presented_presentation_groups",
-            joinColumns = @JoinColumn(name = "group_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "presentation_id", referencedColumnName = "id")
-    )
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "presentedGroups")
     List<Presentation> presentedPresentations;
 
     // list invitation
