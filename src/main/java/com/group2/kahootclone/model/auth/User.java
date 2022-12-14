@@ -7,22 +7,22 @@ import com.group2.kahootclone.model.presentation.Chat;
 import com.group2.kahootclone.model.presentation.Question;
 import com.group2.kahootclone.model.presentation.record.Record;
 import com.group2.kahootclone.model.group.UserKahootGroup;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Set;
 
-@Data
+@Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
 @Entity
 @Table
 public class User extends BaseModel {
-    @Column (unique = true)
+    @Column(unique = true)
     private String username;
     private String password;
     private String email;
@@ -72,13 +72,13 @@ public class User extends BaseModel {
     List<Chat> chats;
 
     //list presentations that is collaborated
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "collaboration",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "presentation_id", referencedColumnName = "id")
     )
-    List<Presentation> collaboratedPresentations;
+    Set<Presentation> collaboratedPresentations;
 
     @Override
     public String toString() {

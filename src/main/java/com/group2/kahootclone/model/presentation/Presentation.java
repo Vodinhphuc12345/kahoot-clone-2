@@ -4,16 +4,15 @@ import com.group2.kahootclone.model.BaseModel;
 import com.group2.kahootclone.model.Invitation;
 import com.group2.kahootclone.model.auth.User;
 import com.group2.kahootclone.model.group.KahootGroup;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.util.List;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @SuperBuilder
@@ -29,7 +28,7 @@ public class Presentation extends BaseModel {
     private User user;
 
     // presenting group
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinTable(
             name = "presenting_presentation_groups",
             joinColumns = @JoinColumn(name = "presentation_id", referencedColumnName = "id"),
@@ -38,7 +37,7 @@ public class Presentation extends BaseModel {
     private List<KahootGroup> presentingGroups;
 
     // presented group
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
     @JoinTable(
             name = "presented_presentation_groups",
             joinColumns = @JoinColumn(name = "presentation_id", referencedColumnName = "id"),
@@ -72,7 +71,14 @@ public class Presentation extends BaseModel {
 
     // collaborators
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "collaboratedPresentations")
-    private List<User> collaborators;
+    private Set<User> collaborators;
+
+    @PreRemove
+    void removeSth (){
+        for (User user: collaborators){
+            user.getCollaboratedPresentations().remove(this);
+        }
+    }
 
     // list collaboration invitations
     @OneToMany(mappedBy = "presentation", cascade = CascadeType.ALL)

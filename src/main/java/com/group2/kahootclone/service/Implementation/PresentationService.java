@@ -17,6 +17,7 @@ import com.group2.kahootclone.service.Interface.IPresentationService;
 import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -105,7 +106,6 @@ public class PresentationService implements IPresentationService {
                 ret.buildResourceNotFound("Presentation not found.");
                 return ret;
             }
-
             //delete presentation
             presentationRepository.delete(presentation);
             //build success

@@ -2,6 +2,7 @@ package com.group2.kahootclone.model.group;
 
 import com.group2.kahootclone.model.BaseModel;
 import com.group2.kahootclone.model.Invitation;
+import com.group2.kahootclone.model.auth.User;
 import com.group2.kahootclone.model.presentation.Presentation;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -35,6 +36,17 @@ public class KahootGroup extends BaseModel {
     //list presented presentation
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "presentedGroups")
     List<Presentation> presentedPresentations;
+
+    // remove presentation from group before remove this
+    @PreRemove
+    private void removePresentationFromGroup() {
+        for (Presentation p : presentedPresentations) {
+            p.getPresentedGroups().remove(this);
+        }
+        for (Presentation p : presentingPresentations) {
+            p.getPresentingGroups().remove(this);
+        }
+    }
 
     // list invitation
     @OneToMany(mappedBy = "kahootGroup", cascade = CascadeType.ALL)
