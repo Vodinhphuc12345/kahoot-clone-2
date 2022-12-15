@@ -1,4 +1,4 @@
-package com.group2.kahootclone.reposibility;
+package com.group2.kahootclone.repository;
 
 import com.group2.kahootclone.model.presentation.record.Record;
 import com.group2.kahootclone.model.presentation.record.RecordId;

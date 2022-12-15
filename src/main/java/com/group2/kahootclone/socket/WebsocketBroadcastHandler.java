@@ -6,6 +6,7 @@ import com.group2.kahootclone.socket.Request.SocketRequest;
 import com.group2.kahootclone.socket.Request.chatHandler.ChatRequest;
 import com.group2.kahootclone.socket.Request.questionHandler.AnswerRequest;
 import com.group2.kahootclone.socket.Request.questionHandler.AskRequest;
+import com.group2.kahootclone.socket.Request.questionHandler.ToggleVotingQuestionRequest;
 import com.group2.kahootclone.socket.Request.slideHandler.PresentationRequest;
 import com.group2.kahootclone.socket.Request.slideHandler.RecordRequest;
 import com.group2.kahootclone.socket.eventHandlers.*;
@@ -93,6 +94,12 @@ public class WebsocketBroadcastHandler extends TextWebSocketHandler {
                     SocketRequest<AskRequest> askQuestionRequest = new ObjectMapper().readValue(message.getPayload(),
                             new TypeReference<SocketRequest<AskRequest>>() {});
                     questionHandler.handleAskQuestion(session, roomMap, askQuestionRequest);
+                    break;
+                case TOGGLE_VOTING_QUESTION:
+                    SocketRequest<ToggleVotingQuestionRequest> toggleQuestionRequest =
+                            new ObjectMapper().readValue(message.getPayload(),
+                            new TypeReference<SocketRequest<ToggleVotingQuestionRequest>>() {});
+                    questionHandler.handleToggleVotingQuestion(session, roomMap, toggleQuestionRequest);
                     break;
                 default:
                     log.error("Invalid message type {}", socketRequest.getMetaData());

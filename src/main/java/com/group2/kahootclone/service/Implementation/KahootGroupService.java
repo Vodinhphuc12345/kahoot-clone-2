@@ -10,10 +10,10 @@ import com.group2.kahootclone.object.Request.kahootGroupController.KahootGroupRe
 import com.group2.kahootclone.object.Response.groupController.KahootGroupResponse;
 import com.group2.kahootclone.object.Response.meController.UserResponse;
 import com.group2.kahootclone.object.ResponseObject;
-import com.group2.kahootclone.reposibility.InvitationRepository;
-import com.group2.kahootclone.reposibility.KahootGroupRepository;
-import com.group2.kahootclone.reposibility.UserKahootGroupRepository;
-import com.group2.kahootclone.reposibility.UserRepository;
+import com.group2.kahootclone.repository.InvitationRepository;
+import com.group2.kahootclone.repository.KahootGroupRepository;
+import com.group2.kahootclone.repository.UserKahootGroupRepository;
+import com.group2.kahootclone.repository.UserRepository;
 import com.group2.kahootclone.service.Interface.IKahootGroupService;
 import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.factory.Mappers;

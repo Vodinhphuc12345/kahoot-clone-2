@@ -12,6 +12,7 @@ public enum ClientMessageType {
     NEXT_SLIDE,
     PREV_SLIDE,
     ANSWER_QUESTION,
+    TOGGLE_VOTING_QUESTION,
 
     // Member
     VOTE_SLIDE,

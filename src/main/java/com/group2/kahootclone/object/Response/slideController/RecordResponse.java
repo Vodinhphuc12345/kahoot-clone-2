@@ -1,16 +1,19 @@
 package com.group2.kahootclone.object.Response.slideController;
 
+import com.group2.kahootclone.Utils.MapperUtil;
 import com.group2.kahootclone.model.presentation.record.Record;
-import lombok.Builder;
-import lombok.Data;
+import com.group2.kahootclone.object.Response.BaseResponse;
+import lombok.*;
 
-@Data
-@Builder
-public class RecordResponse {
+@Setter
+@Getter
+@NoArgsConstructor
+public class RecordResponse extends BaseResponse {
     String answer;
-    String user;
-
+    String userName;
     public static RecordResponse fromRecord (Record record){
-        return RecordResponse.builder().answer(record.getAnswer()).user(record.getUser().getDisplayName()).build();
+        RecordResponse response = MapperUtil.INSTANCE.map(record, RecordResponse.class);
+        response.setUserName(record.getUser().getDisplayName());
+        return response;
     }
 }

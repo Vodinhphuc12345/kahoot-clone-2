@@ -1,7 +1,7 @@
 package com.group2.kahootclone.filter;
 
 import com.group2.kahootclone.Utils.JwtUtils;
-import com.group2.kahootclone.reposibility.UserRepository;
+import com.group2.kahootclone.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;

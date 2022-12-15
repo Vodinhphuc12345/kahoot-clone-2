@@ -10,14 +10,13 @@ import com.group2.kahootclone.object.Response.meController.UserResponse;
 import com.group2.kahootclone.object.Response.presentationController.PresentationResponse;
 import com.group2.kahootclone.object.Response.slideController.SlideResponse;
 import com.group2.kahootclone.object.ResponseObject;
-import com.group2.kahootclone.reposibility.KahootGroupRepository;
-import com.group2.kahootclone.reposibility.PresentationRepository;
-import com.group2.kahootclone.reposibility.UserRepository;
+import com.group2.kahootclone.repository.KahootGroupRepository;
+import com.group2.kahootclone.repository.PresentationRepository;
+import com.group2.kahootclone.repository.UserRepository;
 import com.group2.kahootclone.service.Interface.IPresentationService;
 import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -287,6 +286,10 @@ public class PresentationService implements IPresentationService {
                 ret.buildResourceNotFound("Presentation not found.");
                 return ret;
             }
+            //end
+            presentation.getSlides().forEach(slide -> {
+                slide.setPresenting(false);
+            });
 
             //start
             presentation.getSlides().get(0).setPresenting(true);
@@ -416,6 +419,41 @@ public class PresentationService implements IPresentationService {
                     .collect(Collectors.toList());
             //build success
             ret.setObject(list);
+        } catch (Exception exception) {
+            log.error(exception.getMessage(), exception);
+            ret.buildException(exception.getMessage());
+        }
+        return ret;
+    }
+
+    @Transactional
+    @Override
+    public ResponseObject<Object> deletePresentationCollaboration(int presentationId, int collaboratorId) {
+        ResponseObject<Object> ret = new ResponseObject<>();
+        try {
+            //presentation
+            Presentation presentation = presentationRepository.findById(presentationId).orElse(null);
+            if (presentation == null) {
+                ret.buildResourceNotFound("Presentation not found.");
+                return ret;
+            }
+            // collanorations
+            User user = userRepository.findById(collaboratorId).orElse(null);
+            if (user == null) {
+                ret.buildResourceNotFound("Collaborator not found.");
+                return ret;
+            }
+            // check relation
+            User collaborator = presentation.getCollaborators().stream().filter(c -> c.getId() == user.getId()).findAny().orElse(null);
+            if (collaborator == null){
+                ret.buildResourceNotFound("User is not collaborator of this group.");
+                return ret;
+            }
+            // end
+            user.getCollaboratedPresentations().remove(presentation);
+            userRepository.save(user);
+            //build success
+            ret.setObject(null);
         } catch (Exception exception) {
             log.error(exception.getMessage(), exception);
             ret.buildException(exception.getMessage());

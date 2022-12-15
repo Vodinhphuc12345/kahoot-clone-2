@@ -13,4 +13,7 @@ public interface IQuestionService {
     ResponseObject<QuestionResponse> answerQuestion(AnswerRequest message);
 
     ResponseObject<QuestionResponse> askQuestion(AskRequest message);
+
+
+    ResponseObject<QuestionResponse> toggleVotingQuestiontoggleQuestion(int questionId, int userId);
 }

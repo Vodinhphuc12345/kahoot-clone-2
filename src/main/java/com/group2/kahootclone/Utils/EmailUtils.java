@@ -1,5 +1,6 @@
 package com.group2.kahootclone.Utils;
 
+import com.group2.kahootclone.object.Response.authController.PasswordConfirmationResponse;
 import com.group2.kahootclone.object.Response.authController.VerificationResponse;
 
 import java.util.Date;
@@ -16,6 +17,11 @@ public class EmailUtils {
                 .replaceAll("\\{\\{invitationLink\\}\\}", LinkUtils.buildGroupInvitationLink(code, fehost))
                 .replaceAll("\\{\\{usernameFrom\\}\\}", String.valueOf(usernameFrom))
                 .replaceAll("\\{\\{usernameTo\\}\\}", String.valueOf(usernameTo))
-                .replaceAll("\\{\\{group\\}\\}", groupName);
+                .replaceAll("\\{\\{groupName\\}\\}", groupName);
+    }
+
+    public static String buildPasswordConfirmationTemplate(String fehost, PasswordConfirmationResponse response) {
+        return com.group2.kahootclone.constant.emailTemplate.changePasswordConfirm.TEMPLATE
+                .replaceAll("\\{\\{confirmationLink\\}\\}", LinkUtils.buildConfirmationLink(response.getCode(), fehost));
     }
 }

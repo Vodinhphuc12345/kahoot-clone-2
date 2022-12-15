@@ -6,19 +6,23 @@ import com.group2.kahootclone.Utils.JwtUtils;
 import com.group2.kahootclone.constant.ErrorCodes;
 import com.group2.kahootclone.constant.ExpiredTimes;
 import com.group2.kahootclone.mapper.UserMapper;
+import com.group2.kahootclone.model.auth.PasswordConfirmation;
 import com.group2.kahootclone.model.auth.RefreshToken;
 import com.group2.kahootclone.model.auth.User;
 import com.group2.kahootclone.model.auth.Verification;
 import com.group2.kahootclone.object.Request.authController.LoginRequest;
+import com.group2.kahootclone.object.Request.authController.PasswordConfirmationRequest;
 import com.group2.kahootclone.object.Request.authController.RegisterRequest;
 import com.group2.kahootclone.object.Response.authController.LoginResponse;
+import com.group2.kahootclone.object.Response.authController.PasswordConfirmationResponse;
 import com.group2.kahootclone.object.Response.authController.VerificationResponse;
 import com.group2.kahootclone.object.Response.groupController.KahootGroupResponse;
 import com.group2.kahootclone.object.Response.meController.UserResponse;
 import com.group2.kahootclone.object.ResponseObject;
-import com.group2.kahootclone.reposibility.RefreshTokenRepository;
-import com.group2.kahootclone.reposibility.UserRepository;
-import com.group2.kahootclone.reposibility.VerificationRepository;
+import com.group2.kahootclone.repository.PasswordConfirmationRepository;
+import com.group2.kahootclone.repository.RefreshTokenRepository;
+import com.group2.kahootclone.repository.UserRepository;
+import com.group2.kahootclone.repository.VerificationRepository;
 import com.group2.kahootclone.service.Interface.ICloudinaryService;
 import com.group2.kahootclone.service.Interface.IUserService;
 import lombok.extern.slf4j.Slf4j;
@@ -50,6 +54,8 @@ public class UserService implements IUserService {
 
     @Autowired
     RefreshTokenRepository refreshTokenRepository;
+    @Autowired
+    PasswordConfirmationRepository passwordConfirmationRepository;
 
     @Autowired
     ICloudinaryService cloudinaryService;
@@ -216,11 +222,11 @@ public class UserService implements IUserService {
 
     @Override
     public ResponseObject<UserResponse> updateProfile(int userId, RegisterRequest updateRequest) {
-        ResponseObject<UserResponse>  ret = new ResponseObject<>();
+        ResponseObject<UserResponse> ret = new ResponseObject<>();
         try {
             Optional<User> userRet = userRepository.findById(userId);
 
-            User curUser = userRet.isEmpty() ? null : userRet.get();
+            User curUser = userRet.orElse(null);
             if (curUser == null) {
                 ret.buildResourceNotFound("User is not found.");
                 return ret;
@@ -299,7 +305,7 @@ public class UserService implements IUserService {
 
     @Override
     public ResponseObject<List<KahootGroupResponse>> getAllGroupOfUser(int userId) {
-        ResponseObject<List<KahootGroupResponse>>  ret = new ResponseObject<>();
+        ResponseObject<List<KahootGroupResponse>> ret = new ResponseObject<>();
         try {
             Optional<User> userRet = userRepository.findById(userId);
             User curUser = userRet.isEmpty() ? null : userRet.get();
@@ -317,6 +323,77 @@ public class UserService implements IUserService {
             }).collect(Collectors.toList());
             //build success
             ret.setObject(groups);
+        } catch (Exception exception) {
+            log.error(exception.getMessage(), exception);
+            ret.buildException(exception.getMessage());
+        }
+        return ret;
+    }
+
+    @Override
+    public ResponseObject<PasswordConfirmationResponse> renew(PasswordConfirmationRequest passwordConfirmationRequest) {
+        ResponseObject<PasswordConfirmationResponse> ret = new ResponseObject<>();
+        try {
+            User curUser = userRepository
+                    .findUsersByUsernameAndEmail(passwordConfirmationRequest.getUsername()
+                            , passwordConfirmationRequest.getEmail());
+            if (curUser == null) {
+                ret.buildResourceNotFound("User is not found.");
+                return ret;
+            }
+            //convert password request
+            PasswordConfirmation passwordConfirmation = passwordConfirmationRequest.toPasswordConfirmation();
+            passwordConfirmation.setUser(curUser);
+            PasswordConfirmation savedPasswordConfirmation = passwordConfirmationRepository.save(passwordConfirmation);
+            //build success
+            ret.setObject(PasswordConfirmationResponse.fromPasswordConfirmation(savedPasswordConfirmation));
+        } catch (Exception exception) {
+            log.error(exception.getMessage(), exception);
+            ret.buildException(exception.getMessage());
+        }
+        return ret;
+    }
+
+    @Override
+    public ResponseObject<LoginResponse> confirmPassword(String code) {
+        ResponseObject<LoginResponse> ret = new ResponseObject<>();
+        try {
+            PasswordConfirmation passwordConfirmation = passwordConfirmationRepository.findPasswordConfirmationByCode(code);
+            if (passwordConfirmation == null) {
+                ret.buildResourceNotFound("Password Confirmation is not found.");
+                return ret;
+            }
+            if (passwordConfirmation.getUser() == null) {
+                ret.buildResourceNotFound("User is not found.");
+                return ret;
+            }
+            if (passwordConfirmation.isClicked()) {
+                ret.buildResourceNotFound("This request have been confirmed before.");
+                return ret;
+            }
+            if (passwordConfirmation.getTimeExpired() < System.currentTimeMillis()) {
+                ret.buildResourceNotFound("This request is expired.");
+                return ret;
+            }
+            //convert password request
+            // update user
+            User curUser = passwordConfirmation.getUser();
+            String newPassword = new BCryptPasswordEncoder().encode(passwordConfirmation.getPassword());
+            curUser.setPassword(newPassword);
+            User savedUser = userRepository.save(curUser);
+
+            // update confirmation
+            passwordConfirmation.setClicked(true);
+            passwordConfirmationRepository.save(passwordConfirmation);
+
+            // token
+            String access_token = JwtUtils.genAccessToken(curUser);
+            String refresh_token = JwtUtils.genRefreshToken(curUser);
+            //save refresh token
+            refreshTokenRepository.save(RefreshToken.builder().token(refresh_token).build());
+            // get token
+            //build success
+            ret.setObject(LoginResponse.fromUserAndToken(curUser, access_token, refresh_token));
         } catch (Exception exception) {
             log.error(exception.getMessage(), exception);
             ret.buildException(exception.getMessage());

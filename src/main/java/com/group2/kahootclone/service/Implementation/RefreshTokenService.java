@@ -5,7 +5,7 @@ import com.group2.kahootclone.model.auth.RefreshToken;
 import com.group2.kahootclone.model.auth.User;
 import com.group2.kahootclone.object.Response.authController.TokenResponse;
 import com.group2.kahootclone.object.ResponseObject;
-import com.group2.kahootclone.reposibility.RefreshTokenRepository;
+import com.group2.kahootclone.repository.RefreshTokenRepository;
 import com.group2.kahootclone.service.Interface.IRefreshTokenService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

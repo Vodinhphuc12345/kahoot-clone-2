@@ -21,4 +21,10 @@ public class LinkUtils {
                 fehost,
                 code);
     }
+
+    public static String buildConfirmationLink(String code, String fehost) {
+        return String.format("%s/password/confirmation?code=%s",
+                fehost,
+                code);
+    }
 }

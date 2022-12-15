@@ -5,7 +5,9 @@ public enum ServerMessageType {
     PRESENTED_SLIDE,
     ASKED_QUESTION,
     ANSWERED_QUESTION,
+    VOTED_QUESTION,
     CHAT,
     JOIN_ROOM,
     LEAVE_ROOM,
+
 }

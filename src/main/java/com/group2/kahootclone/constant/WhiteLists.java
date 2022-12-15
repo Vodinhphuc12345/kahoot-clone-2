@@ -16,6 +16,8 @@ public class WhiteLists {
             "/api/v1/auth/register",
             "/api/v1/auth/verification",
             "/api/v1/auth/verification/resend",
-            "/socket"
+            "/socket",
+            "/api/v1/auth/password/renew",
+            "/api/v1/auth/password/confirmation/*"
     };
 }

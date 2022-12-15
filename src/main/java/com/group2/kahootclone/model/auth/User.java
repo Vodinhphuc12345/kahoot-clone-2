@@ -80,6 +80,16 @@ public class User extends BaseModel {
     )
     Set<Presentation> collaboratedPresentations;
 
+    /// voting question
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "votingUsers")
+    private Set<Question> votingQuestion;
+    @PreRemove
+    void removeSth (){
+        for (Question question: votingQuestion){
+            question.getVotingUsers().remove(this);
+        }
+    }
+
     @Override
     public String toString() {
         return "User{" +

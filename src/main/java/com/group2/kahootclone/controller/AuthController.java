@@ -4,9 +4,11 @@ import com.group2.kahootclone.Utils.EmailUtils;
 import com.group2.kahootclone.Utils.ErrorUtils;
 import com.group2.kahootclone.object.EmailDetails;
 import com.group2.kahootclone.object.Request.authController.LoginRequest;
+import com.group2.kahootclone.object.Request.authController.PasswordConfirmationRequest;
 import com.group2.kahootclone.object.Request.authController.RegisterRequest;
 import com.group2.kahootclone.object.Request.authController.VerificationRequest;
 import com.group2.kahootclone.object.Response.authController.LoginResponse;
+import com.group2.kahootclone.object.Response.authController.PasswordConfirmationResponse;
 import com.group2.kahootclone.object.Response.authController.TokenResponse;
 import com.group2.kahootclone.object.Response.authController.VerificationResponse;
 import com.group2.kahootclone.object.ResponseObject;
@@ -37,7 +39,6 @@ public class AuthController {
     IUserService userService;
     @Autowired
     AuthenticationManager authenticationManager;
-
     @Autowired
     IRefreshTokenService refreshTokenService;
     @Autowired
@@ -60,6 +61,34 @@ public class AuthController {
         ResponseObject<LoginResponse> loginRet = userService.login(loginRequest);
 
         return loginRet.createResponse();
+    }
+
+    @PostMapping("password/renew")
+    public ResponseEntity<ResponseObject<PasswordConfirmationResponse>> renewController(@RequestBody @Valid PasswordConfirmationRequest passwordConfirmationRequest,
+                                                                                        HttpServletRequest request) {
+        ResponseObject<PasswordConfirmationResponse> confirmationRes = userService.renew(passwordConfirmationRequest);
+
+        if (ErrorUtils.isFail(confirmationRes.getErrorCode()))
+            return confirmationRes.createResponse();
+
+        PasswordConfirmationResponse response = confirmationRes.getObject();
+
+        String fehost = request.getHeader("origin");
+        EmailDetails emailDetails = EmailDetails.builder()
+                .attachment("No")
+                .recipient(passwordConfirmationRequest.getEmail())
+                .msgBody(EmailUtils.buildPasswordConfirmationTemplate(fehost, response))
+                .subject("Confirmation")
+                .build();
+        emailService.sendSimpleEmail(emailDetails);
+        return confirmationRes.createResponse();
+    }
+
+    @GetMapping("password/confirmation/{code}")
+    public ResponseEntity<ResponseObject<LoginResponse>> confirmPassword(@PathVariable String code,
+                                                                                        HttpServletRequest request) {
+        ResponseObject<LoginResponse> confirmationRes = userService.confirmPassword(code);
+        return confirmationRes.createResponse();
     }
 
     @PostMapping("login/google")

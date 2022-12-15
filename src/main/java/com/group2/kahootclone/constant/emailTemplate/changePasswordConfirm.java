@@ -1,6 +1,6 @@
 package com.group2.kahootclone.constant.emailTemplate;
 
-public class invitation {
+public class changePasswordConfirm {
     public static String TEMPLATE = "<!DOCTYPE html>\n" +
             "<html>\n" +
             "<head>\n" +
@@ -155,7 +155,7 @@ public class invitation {
             "          <!-- start copy -->\n" +
             "          <tr>\n" +
             "            <td align=\"left\" bgcolor=\"#ffffff\" style=\"padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;\">\n" +
-            "              <p style=\"margin: 0;\">Hello, thank you for using our service. You receive an invitation from {{usernameFrom}} to join to group <b>{{groupName}}</b> in our system. Please Click the button below to join this group</p>\n" +
+            "              <p style=\"margin: 0;\">Please, Click this button to confirm your renew password request</p>\n" +
             "            </td>\n" +
             "          </tr>\n" +
             "          <!-- end copy -->\n" +
@@ -169,7 +169,7 @@ public class invitation {
             "                    <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\">\n" +
             "                      <tr>\n" +
             "                        <td align=\"center\" bgcolor=\"#1a82e2\" style=\"border-radius: 6px;\">\n" +
-            "                          <a href=\"{{invitationLink}}\" target=\"_blank\" style=\"display: inline-block; padding: 16px 36px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; color: #ffffff; text-decoration: none; border-radius: 6px;\">Join invitation</a>\n" +
+            "                          <a href=\"{{confirmationLink}}\" target=\"_blank\" style=\"display: inline-block; padding: 16px 36px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; color: #ffffff; text-decoration: none; border-radius: 6px;\">Join invitation</a>\n" +
             "                        </td>\n" +
             "                      </tr>\n" +
             "                    </table>\n" +

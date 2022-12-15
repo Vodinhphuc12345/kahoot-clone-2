@@ -35,7 +35,8 @@ public class PresentationController {
     IQuestionService questionService;
     @Autowired
     IInvitationService invitationService;
-    @PreAuthorize("@presentationRole.isCreator(authentication, #presentationId) or @presentationRole.isCollaborator(authentication, #presentationId)")
+    @PreAuthorize("@presentationRole.isCreator(authentication, #presentationId) " +
+            "or @presentationRole.isCollaborator(authentication, #presentationId)")
     @PutMapping ("/{presentationId}")
     public ResponseEntity<ResponseObject<PresentationResponse>> updatePresentation (@PathVariable int presentationId
             , @RequestBody PresentationRequest request){
@@ -63,11 +64,20 @@ public class PresentationController {
         return presentationRes.createResponse();
     }
 
+    // delete presentation collaboration
+    @PreAuthorize("@presentationRole.isCreator(authentication, #presentationId)")
+    @DeleteMapping("/{presentationId}/collaborator/{collaboratorId}")
+    public ResponseEntity<ResponseObject<Object>> deletePresentationCollaboration(@PathVariable int presentationId,
+                                                                                             @PathVariable int collaboratorId,
+                                                                                             HttpServletRequest httpRequest) {
+        ResponseObject<Object> deleteRes = presentationService.deletePresentationCollaboration(presentationId, collaboratorId);
+        return deleteRes.createResponse();
+    }
     // create presentation collaboration invitation
     @PreAuthorize("@presentationRole.isCreator(authentication, #presentationId)")
     @PostMapping("/{presentationId}/invitation")
     public ResponseEntity<ResponseObject<InvitationResponse>> createPresentationCollaboratorInvitation(@PathVariable int presentationId,
-                                                                                             HttpServletRequest httpRequest) {
+                                                                                                       HttpServletRequest httpRequest) {
         ResponseObject<InvitationResponse> invitationRet = invitationService.createPresentationCollaboratorInvitation(presentationId);
 
         String fehost = httpRequest.getHeader("origin");
@@ -85,7 +95,8 @@ public class PresentationController {
     }
 
     // get collaborators
-    @PreAuthorize("@presentationRole.isCreator(authentication, #presentationId) or @presentationRole.isCollaborator(authentication, #presentationId)")
+    @PreAuthorize("@presentationRole.isCreator(authentication, #presentationId) " +
+            "or @presentationRole.isCollaborator(authentication, #presentationId)")
     @GetMapping("/{presentationId}/collaborator")
     public ResponseEntity<ResponseObject<List<UserResponse>>> getCollaborator(@PathVariable int presentationId) {
 

@@ -9,6 +9,7 @@ import com.group2.kahootclone.service.Interface.IQuestionService;
 import com.group2.kahootclone.socket.Request.SocketRequest;
 import com.group2.kahootclone.socket.Request.questionHandler.AnswerRequest;
 import com.group2.kahootclone.socket.Request.questionHandler.AskRequest;
+import com.group2.kahootclone.socket.Request.questionHandler.ToggleVotingQuestionRequest;
 import com.group2.kahootclone.socket.Response.MetaData;
 import com.group2.kahootclone.socket.Response.SocketResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -71,6 +72,39 @@ public class QuestionHandler {
 
             String responseStr = new ObjectMapper().writeValueAsString(socketResponse);
             Map<String, Set<WebSocketSession>> subRoomMap = roomMap.get(askQuestionRequest.getMetaData().getRoomName());
+
+            if (subRoomMap != null) {
+                if (subRoomMap.get(ClientType.MEMBER.toString()) != null)
+                    for (WebSocketSession socketSession : subRoomMap.get(ClientType.MEMBER.toString())) {
+                        socketSession.sendMessage(new TextMessage(responseStr));
+                    }
+                if (subRoomMap.get(ClientType.HOST.toString()) != null)
+                    for (WebSocketSession socketSession : subRoomMap.get(ClientType.HOST.toString())) {
+                        socketSession.sendMessage(new TextMessage(responseStr));
+                    }
+            }
+        } catch (Exception exception) {
+            log.error(exception.getMessage(), exception);
+        }
+    }
+
+    public void handleToggleVotingQuestion(WebSocketSession session, Map<String, Map<String, Set<WebSocketSession>>> roomMap, SocketRequest<ToggleVotingQuestionRequest> toggleQuestionRequest) {
+        try {
+            ResponseObject<QuestionResponse> questionRes = questionService.
+                    toggleVotingQuestiontoggleQuestion(toggleQuestionRequest.getMessage().getQuestionId(),
+                            toggleQuestionRequest.getMessage().getUserId());
+            //send
+            MetaData metaData = new MetaData();
+            metaData.setMessageType(ServerMessageType.VOTED_QUESTION);
+
+            SocketResponse<QuestionResponse> socketResponse = SocketResponse
+                    .<QuestionResponse>builder()
+                    .metaData(metaData)
+                    .message(questionRes.getObject())
+                    .build();
+
+            String responseStr = new ObjectMapper().writeValueAsString(socketResponse);
+            Map<String, Set<WebSocketSession>> subRoomMap = roomMap.get(toggleQuestionRequest.getMetaData().getRoomName());
 
             if (subRoomMap != null) {
                 if (subRoomMap.get(ClientType.MEMBER.toString()) != null)

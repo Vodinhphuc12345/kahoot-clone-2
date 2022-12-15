@@ -5,9 +5,9 @@ import com.group2.kahootclone.model.presentation.Presentation;
 import com.group2.kahootclone.model.presentation.Question;
 import com.group2.kahootclone.object.Response.questionHandler.QuestionResponse;
 import com.group2.kahootclone.object.ResponseObject;
-import com.group2.kahootclone.reposibility.PresentationRepository;
-import com.group2.kahootclone.reposibility.QuestionRepository;
-import com.group2.kahootclone.reposibility.UserRepository;
+import com.group2.kahootclone.repository.PresentationRepository;
+import com.group2.kahootclone.repository.QuestionRepository;
+import com.group2.kahootclone.repository.UserRepository;
 import com.group2.kahootclone.service.Interface.IQuestionService;
 import com.group2.kahootclone.socket.Request.questionHandler.AnswerRequest;
 import com.group2.kahootclone.socket.Request.questionHandler.AskRequest;
@@ -115,4 +115,43 @@ public class QuestionService implements IQuestionService {
         }
         return ret;
     }
+
+    @Transactional
+    @Override
+    public ResponseObject<QuestionResponse> toggleVotingQuestiontoggleQuestion(int questionId, int userId) {
+        ResponseObject<QuestionResponse> ret = new ResponseObject<>();
+        try {
+            //presentation
+            Question question = questionRepository.findById(questionId).orElse(null);
+
+            if (question == null) {
+                ret.buildResourceNotFound("Question not found.");
+                return ret;
+            }
+            //user
+            User user = userRepository.findById(userId).orElse(null);
+
+            if (user == null) {
+                ret.buildResourceNotFound("User not found.");
+                return ret;
+            }
+
+            //set
+            if (question.getVotingUsers().contains(user)){
+                question.getVotingUsers().remove(user);
+            } else {
+                question.getVotingUsers().add(user);
+            }
+            //save
+            Question savedQuestion = questionRepository.save(question);
+            //build success
+            ret.setObject(QuestionResponse.fromQuestion(savedQuestion));
+        } catch (Exception exception) {
+            log.error(exception.getMessage(), exception);
+            ret.buildException(exception.getMessage());
+        }
+        return ret;
+    }
+
+
 }

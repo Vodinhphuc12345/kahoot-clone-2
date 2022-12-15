@@ -1,8 +1,10 @@
 package com.group2.kahootclone.service.Interface;
 
 import com.group2.kahootclone.object.Request.authController.LoginRequest;
+import com.group2.kahootclone.object.Request.authController.PasswordConfirmationRequest;
 import com.group2.kahootclone.object.Request.authController.RegisterRequest;
 import com.group2.kahootclone.object.Response.authController.LoginResponse;
+import com.group2.kahootclone.object.Response.authController.PasswordConfirmationResponse;
 import com.group2.kahootclone.object.Response.authController.VerificationResponse;
 import com.group2.kahootclone.object.Response.groupController.KahootGroupResponse;
 import com.group2.kahootclone.object.Response.meController.UserResponse;
@@ -28,4 +30,8 @@ public interface IUserService extends UserDetailsService {
     ResponseObject<LoginResponse> login(LoginRequest loginRequest);
 
     ResponseObject<List<KahootGroupResponse>> getAllGroupOfUser(int userId);
+
+    ResponseObject<PasswordConfirmationResponse> renew(PasswordConfirmationRequest passwordConfirmationRequest);
+
+    ResponseObject<LoginResponse> confirmPassword(String code);
 }

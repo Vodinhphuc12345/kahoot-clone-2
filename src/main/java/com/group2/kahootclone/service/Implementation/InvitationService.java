@@ -11,7 +11,7 @@ import com.group2.kahootclone.object.Response.groupController.InvitationResponse
 import com.group2.kahootclone.object.Response.groupController.KahootGroupResponse;
 import com.group2.kahootclone.object.Response.presentationController.PresentationResponse;
 import com.group2.kahootclone.object.ResponseObject;
-import com.group2.kahootclone.reposibility.*;
+import com.group2.kahootclone.repository.*;
 import com.group2.kahootclone.service.Interface.IInvitationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

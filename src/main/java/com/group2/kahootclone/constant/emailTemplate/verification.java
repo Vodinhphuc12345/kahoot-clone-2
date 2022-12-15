@@ -217,23 +217,6 @@ public class verification {
             "        <![endif]-->\n" +
             "        <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" style=\"max-width: 600px;\">\n" +
             "\n" +
-            "          <!-- start permission -->\n" +
-            "          <tr>\n" +
-            "            <td align=\"center\" bgcolor=\"#e9ecef\" style=\"padding: 12px 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 20px; color: #666;\">\n" +
-            "              <p style=\"margin: 0;\">You received this email because we received a request for verification for your account. If you didn't request verification you can safely delete this email.</p>\n" +
-            "            </td>\n" +
-            "          </tr>\n" +
-            "          <!-- end permission -->\n" +
-            "\n" +
-            "          <!-- start unsubscribe -->\n" +
-            "          <tr>\n" +
-            "            <td align=\"center\" bgcolor=\"#e9ecef\" style=\"padding: 12px 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 14px; line-height: 20px; color: #666;\">\n" +
-            "              <p style=\"margin: 0;\">To stop receiving these emails, you can <a href=\"https://sendgrid.com\" target=\"_blank\">unsubscribe</a> at any time.</p>\n" +
-            "              <p style=\"margin: 0;\">Paste 1234 S. Broadway St. City, State 12345</p>\n" +
-            "            </td>\n" +
-            "          </tr>\n" +
-            "          <!-- end unsubscribe -->\n" +
-            "\n" +
             "        </table>\n" +
             "        <!--[if (gte mso 9)|(IE)]>\n" +
             "        </td>\n" +

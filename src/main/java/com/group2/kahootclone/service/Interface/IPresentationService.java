@@ -34,4 +34,6 @@ public interface IPresentationService {
     ResponseObject<List<SlideResponse>> nextSlide(int presentationId);
 
     ResponseObject<List<SlideResponse>> prevSlide(int presentationId);
+
+    ResponseObject<Object> deletePresentationCollaboration(int presentationId, int collaboratorId);
 }
