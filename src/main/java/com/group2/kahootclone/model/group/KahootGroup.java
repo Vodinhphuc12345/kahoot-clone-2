@@ -21,6 +21,7 @@ import java.util.List;
 public class KahootGroup extends BaseModel {
     private String groupName;
     private String description;
+    private String roomName;
     //list user
     @OneToMany(
             mappedBy = "kahootGroup",

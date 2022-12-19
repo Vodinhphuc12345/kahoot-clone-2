@@ -1,10 +1,10 @@
 package com.group2.kahootclone.service.Interface;
 
-import com.group2.kahootclone.object.Request.kahootGroupController.AssignRoleRequest;
-import com.group2.kahootclone.object.Request.kahootGroupController.KahootGroupRequest;
-import com.group2.kahootclone.object.Response.groupController.KahootGroupResponse;
-import com.group2.kahootclone.object.Response.meController.UserResponse;
-import com.group2.kahootclone.object.ResponseObject;
+import com.group2.kahootclone.DTO.Request.kahootGroupController.AssignRoleRequest;
+import com.group2.kahootclone.DTO.Request.kahootGroupController.KahootGroupRequest;
+import com.group2.kahootclone.DTO.Response.groupController.KahootGroupResponse;
+import com.group2.kahootclone.DTO.Response.meController.UserResponse;
+import com.group2.kahootclone.DTO.ResponseObject;
 
 import java.util.List;
 
@@ -20,4 +20,8 @@ public interface IKahootGroupService {
     ResponseObject<KahootGroupResponse> assignRole(int groupId, AssignRoleRequest request);
 
     ResponseObject<List<UserResponse>> getListUsersOfKahootGroup(int groupId);
+
+    ResponseObject<List<KahootGroupResponse>> getPresentingGroupsOfPresentation(int presentationId);
+
+    ResponseObject<List<KahootGroupResponse>> getKahootGroups(List<Integer> groupIds);
 }

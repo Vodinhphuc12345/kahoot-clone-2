@@ -1,11 +1,10 @@
 package com.group2.kahootclone.service.Implementation;
 
-import com.group2.kahootclone.object.EmailDetails;
+import com.group2.kahootclone.DTO.EmailDetails;
 import com.group2.kahootclone.service.Interface.IEmailService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMailMessage;
 import org.springframework.mail.javamail.MimeMessageHelper;

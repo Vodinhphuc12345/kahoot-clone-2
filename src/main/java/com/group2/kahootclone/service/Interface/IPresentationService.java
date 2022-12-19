@@ -1,10 +1,10 @@
 package com.group2.kahootclone.service.Interface;
 
-import com.group2.kahootclone.object.Request.presentationController.PresentationRequest;
-import com.group2.kahootclone.object.Response.meController.UserResponse;
-import com.group2.kahootclone.object.Response.presentationController.PresentationResponse;
-import com.group2.kahootclone.object.Response.slideController.SlideResponse;
-import com.group2.kahootclone.object.ResponseObject;
+import com.group2.kahootclone.DTO.Request.presentationController.PresentationRequest;
+import com.group2.kahootclone.DTO.Response.meController.UserResponse;
+import com.group2.kahootclone.DTO.Response.presentationController.PresentationResponse;
+import com.group2.kahootclone.DTO.Response.slideController.SlideResponse;
+import com.group2.kahootclone.DTO.ResponseObject;
 
 import java.util.List;
 

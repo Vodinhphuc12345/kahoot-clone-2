@@ -58,7 +58,7 @@ public class Presentation {
 
     public boolean isSupporter(Authentication authentication, int presentationId) {
         com.group2.kahootclone.model.presentation.Presentation presentation = getPresentation(presentationId);
-        if (presentation == null || !(presentation.getPresentingGroups() == null || presentation.getPresentingGroups().isEmpty()))
+        if (presentation == null || presentation.getPresentingGroups() == null || presentation.getPresentingGroups().isEmpty())
             return false;
         int userId = (int) authentication.getPrincipal();
 

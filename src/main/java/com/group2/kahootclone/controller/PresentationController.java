@@ -1,14 +1,13 @@
 package com.group2.kahootclone.controller;
 
 import com.group2.kahootclone.Utils.LinkUtils;
-import com.group2.kahootclone.object.Request.presentationController.PresentationRequest;
-import com.group2.kahootclone.object.Response.chatHandler.ChatResponse;
-import com.group2.kahootclone.object.Response.groupController.InvitationResponse;
-import com.group2.kahootclone.object.Response.groupController.KahootGroupResponse;
-import com.group2.kahootclone.object.Response.meController.UserResponse;
-import com.group2.kahootclone.object.Response.presentationController.PresentationResponse;
-import com.group2.kahootclone.object.Response.questionHandler.QuestionResponse;
-import com.group2.kahootclone.object.ResponseObject;
+import com.group2.kahootclone.DTO.Request.presentationController.PresentationRequest;
+import com.group2.kahootclone.DTO.Response.chatHandler.ChatResponse;
+import com.group2.kahootclone.DTO.Response.groupController.InvitationResponse;
+import com.group2.kahootclone.DTO.Response.meController.UserResponse;
+import com.group2.kahootclone.DTO.Response.presentationController.PresentationResponse;
+import com.group2.kahootclone.DTO.Response.questionHandler.QuestionResponse;
+import com.group2.kahootclone.DTO.ResponseObject;
 import com.group2.kahootclone.service.Interface.IChatService;
 import com.group2.kahootclone.service.Interface.IInvitationService;
 import com.group2.kahootclone.service.Interface.IPresentationService;

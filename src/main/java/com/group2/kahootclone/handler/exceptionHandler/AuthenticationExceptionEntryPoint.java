@@ -1,7 +1,7 @@
 package com.group2.kahootclone.handler.exceptionHandler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.group2.kahootclone.object.ResponseObject;
+import com.group2.kahootclone.DTO.ResponseObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;

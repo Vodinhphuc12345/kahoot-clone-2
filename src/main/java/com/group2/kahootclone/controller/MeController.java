@@ -1,10 +1,10 @@
 package com.group2.kahootclone.controller;
 
-import com.group2.kahootclone.object.Request.authController.RegisterRequest;
-import com.group2.kahootclone.object.Response.groupController.KahootGroupResponse;
-import com.group2.kahootclone.object.Response.meController.UserResponse;
-import com.group2.kahootclone.object.Response.presentationController.PresentationResponse;
-import com.group2.kahootclone.object.ResponseObject;
+import com.group2.kahootclone.DTO.Request.authController.RegisterRequest;
+import com.group2.kahootclone.DTO.Response.groupController.KahootGroupResponse;
+import com.group2.kahootclone.DTO.Response.meController.UserResponse;
+import com.group2.kahootclone.DTO.Response.presentationController.PresentationResponse;
+import com.group2.kahootclone.DTO.ResponseObject;
 import com.group2.kahootclone.service.Interface.IKahootGroupService;
 import com.group2.kahootclone.service.Interface.IPresentationService;
 import com.group2.kahootclone.service.Interface.IRefreshTokenService;
@@ -12,7 +12,6 @@ import com.group2.kahootclone.service.Interface.IUserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;

@@ -8,6 +8,6 @@ public enum ServerMessageType {
     VOTED_QUESTION,
     CHAT,
     JOIN_ROOM,
-    LEAVE_ROOM,
+    LEAVE_ROOM, PRESENTING_PRESENTATION_IN_GROUP,
 
 }

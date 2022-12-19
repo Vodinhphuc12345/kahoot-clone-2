@@ -1,12 +1,9 @@
 package com.group2.kahootclone.service.Interface;
 
-import com.group2.kahootclone.object.Response.groupController.InvitationResponse;
-import com.group2.kahootclone.object.Response.groupController.KahootGroupResponse;
-import com.group2.kahootclone.object.Response.meController.UserResponse;
-import com.group2.kahootclone.object.Response.presentationController.PresentationResponse;
-import com.group2.kahootclone.object.ResponseObject;
-
-import java.util.List;
+import com.group2.kahootclone.DTO.Response.groupController.InvitationResponse;
+import com.group2.kahootclone.DTO.Response.groupController.KahootGroupResponse;
+import com.group2.kahootclone.DTO.Response.presentationController.PresentationResponse;
+import com.group2.kahootclone.DTO.ResponseObject;
 
 public interface IInvitationService {
 

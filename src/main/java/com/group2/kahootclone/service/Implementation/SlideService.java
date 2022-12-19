@@ -7,10 +7,10 @@ import com.group2.kahootclone.model.presentation.Presentation;
 import com.group2.kahootclone.model.presentation.record.Record;
 import com.group2.kahootclone.model.presentation.record.RecordId;
 import com.group2.kahootclone.model.presentation.Slide;
-import com.group2.kahootclone.object.Request.slideController.SlideRequest;
+import com.group2.kahootclone.DTO.Request.slideController.SlideRequest;
 import com.group2.kahootclone.socket.Request.slideHandler.RecordRequest;
-import com.group2.kahootclone.object.Response.slideController.SlideResponse;
-import com.group2.kahootclone.object.ResponseObject;
+import com.group2.kahootclone.DTO.Response.slideController.SlideResponse;
+import com.group2.kahootclone.DTO.ResponseObject;
 import com.group2.kahootclone.repository.PresentationRepository;
 import com.group2.kahootclone.repository.RecordRepository;
 import com.group2.kahootclone.repository.SlideRepository;
@@ -23,6 +23,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -269,10 +270,10 @@ public class SlideService implements ISlideService {
             int userId = (int) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
             RecordId recordId = new RecordId(userId, slide.getId());
 
+            slide.setRecords(new ArrayList<>());
             Record record = recordRepository.findByRecordId(recordId);
             if (record != null){
-                ret.setObject(null);
-                return ret;
+                slide.getRecords().add(record);
             }
             //build success
             ret.setObject(SlideResponse.fromSlide(slide));

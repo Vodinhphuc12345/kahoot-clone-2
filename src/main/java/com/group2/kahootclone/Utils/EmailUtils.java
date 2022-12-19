@@ -1,7 +1,7 @@
 package com.group2.kahootclone.Utils;
 
-import com.group2.kahootclone.object.Response.authController.PasswordConfirmationResponse;
-import com.group2.kahootclone.object.Response.authController.VerificationResponse;
+import com.group2.kahootclone.DTO.Response.authController.PasswordConfirmationResponse;
+import com.group2.kahootclone.DTO.Response.authController.VerificationResponse;
 
 import java.util.Date;
 

@@ -1,6 +1,6 @@
 package com.group2.kahootclone.Utils;
 
-import com.group2.kahootclone.object.Response.authController.VerificationResponse;
+import com.group2.kahootclone.DTO.Response.authController.VerificationResponse;
 
 public class LinkUtils {
     public static String buildVerificationLink(VerificationResponse verification, String fehost) {

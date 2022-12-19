@@ -1,28 +1,28 @@
 package com.group2.kahootclone.service.Implementation;
 
+import com.group2.kahootclone.DTO.Request.kahootGroupController.AssignRoleRequest;
+import com.group2.kahootclone.DTO.Request.kahootGroupController.KahootGroupRequest;
+import com.group2.kahootclone.DTO.Response.groupController.KahootGroupResponse;
+import com.group2.kahootclone.DTO.Response.meController.UserResponse;
+import com.group2.kahootclone.DTO.ResponseObject;
 import com.group2.kahootclone.constant.ErrorCodes;
 import com.group2.kahootclone.mapper.GroupMapper;
-import com.group2.kahootclone.model.group.KahootGroup;
 import com.group2.kahootclone.model.auth.User;
+import com.group2.kahootclone.model.group.KahootGroup;
 import com.group2.kahootclone.model.group.UserKahootGroup;
-import com.group2.kahootclone.object.Request.kahootGroupController.AssignRoleRequest;
-import com.group2.kahootclone.object.Request.kahootGroupController.KahootGroupRequest;
-import com.group2.kahootclone.object.Response.groupController.KahootGroupResponse;
-import com.group2.kahootclone.object.Response.meController.UserResponse;
-import com.group2.kahootclone.object.ResponseObject;
-import com.group2.kahootclone.repository.InvitationRepository;
-import com.group2.kahootclone.repository.KahootGroupRepository;
-import com.group2.kahootclone.repository.UserKahootGroupRepository;
-import com.group2.kahootclone.repository.UserRepository;
+import com.group2.kahootclone.model.presentation.Presentation;
+import com.group2.kahootclone.repository.*;
 import com.group2.kahootclone.service.Interface.IKahootGroupService;
 import lombok.extern.slf4j.Slf4j;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.group2.kahootclone.constant.Roles.KICK_OUT;
@@ -40,6 +40,8 @@ public class KahootGroupService implements IKahootGroupService {
     UserRepository userRepository;
     @Autowired
     UserKahootGroupRepository userKahootGroupRepository;
+    @Autowired
+    PresentationRepository presentationRepository;
 
     @Override
     public ResponseObject<KahootGroupResponse> createKahootGroup(KahootGroupRequest request, int userId) {
@@ -54,6 +56,9 @@ public class KahootGroupService implements IKahootGroupService {
             }
 
             KahootGroup kahootGroup = request.toKahootGroup();
+            //build room
+            String roomName = UUID.randomUUID().toString();
+            kahootGroup.setRoomName(roomName);
             //group
             KahootGroup savedKahootGroup = kahootGroupRepository.save(kahootGroup);
 
@@ -78,7 +83,7 @@ public class KahootGroupService implements IKahootGroupService {
         ResponseObject<Boolean> ret = new ResponseObject<>();
         try {
             Optional<KahootGroup> kahootGroupRet = kahootGroupRepository.findById(groupId);
-            KahootGroup kahootGroup = kahootGroupRet.isEmpty() ? null : kahootGroupRet.get();
+            KahootGroup kahootGroup = kahootGroupRet.orElse(null);
 
             if (kahootGroup == null) {
                 ret.buildResourceNotFound("Kahoot group is not found");
@@ -101,7 +106,7 @@ public class KahootGroupService implements IKahootGroupService {
         ResponseObject<KahootGroupResponse> ret = new ResponseObject<>();
         try {
             Optional<KahootGroup> kahootGroupRet = kahootGroupRepository.findById(groupId);
-            KahootGroup kahootGroup = kahootGroupRet.isEmpty() ? null : kahootGroupRet.get();
+            KahootGroup kahootGroup = kahootGroupRet.orElse(null);
 
             //build resource not found
             if (kahootGroup == null) {
@@ -127,7 +132,7 @@ public class KahootGroupService implements IKahootGroupService {
         ResponseObject<KahootGroupResponse> ret = new ResponseObject<>();
         try {
             Optional<KahootGroup> kahootGroupRet = kahootGroupRepository.findById(groupId);
-            KahootGroup kahootGroup = kahootGroupRet.isEmpty() ? null : kahootGroupRet.get();
+            KahootGroup kahootGroup = kahootGroupRet.orElse(null);
 
             //build resource not found
             if (kahootGroup == null) {
@@ -202,7 +207,7 @@ public class KahootGroupService implements IKahootGroupService {
         ResponseObject<List<UserResponse>> ret = new ResponseObject<>();
         try {
             Optional<KahootGroup> kahootGroupRet = kahootGroupRepository.findById(groupId);
-            KahootGroup kahootGroup = kahootGroupRet.isEmpty() ? null : kahootGroupRet.get();
+            KahootGroup kahootGroup = kahootGroupRet.orElse(null);
 
             //build resource not found
             if (kahootGroup == null) {
@@ -218,6 +223,48 @@ public class KahootGroupService implements IKahootGroupService {
             }).collect(Collectors.toList());
             //build success
             ret.setObject(userResponses);
+        } catch (Exception exception) {
+            log.error(exception.getMessage(), exception);
+            ret.buildException(exception.getMessage());
+        }
+        return ret;
+    }
+
+    @Transactional
+    @Override
+    public ResponseObject<List<KahootGroupResponse>> getPresentingGroupsOfPresentation(int presentationId) {
+        ResponseObject<List<KahootGroupResponse>> ret = new ResponseObject<>();
+        try {
+            Presentation presentation = presentationRepository.findById(presentationId).orElse(null);
+
+            //build resource not found
+            if (presentation == null) {
+                ret.buildResourceNotFound("Presentation is not found");
+                return ret;
+            }
+
+            List<KahootGroupResponse> kahootGroupResponses = presentation.getPresentingGroups().stream()
+                    .map(KahootGroupResponse::fromKahootGroup)
+                    .collect(Collectors.toList());
+            //build success
+            ret.setObject(kahootGroupResponses);
+        } catch (Exception exception) {
+            log.error(exception.getMessage(), exception);
+            ret.buildException(exception.getMessage());
+        }
+        return ret;
+    }
+
+    @Transactional
+    @Override
+    public ResponseObject<List<KahootGroupResponse>> getKahootGroups(List<Integer> groupIds) {
+        ResponseObject<List<KahootGroupResponse>> ret = new ResponseObject<>();
+        try {
+            List<KahootGroup> kahootGroups = kahootGroupRepository.findAllById(groupIds);
+            //build resource not found
+            List<KahootGroupResponse> kahootGroupResponses = kahootGroups.stream().map(KahootGroupResponse::fromKahootGroup).collect(Collectors.toList());
+            //build success
+            ret.setObject(kahootGroupResponses);
         } catch (Exception exception) {
             log.error(exception.getMessage(), exception);
             ret.buildException(exception.getMessage());

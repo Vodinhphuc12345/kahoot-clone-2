@@ -1,8 +1,8 @@
 package com.group2.kahootclone.service.Interface;
 
 import com.group2.kahootclone.model.auth.RefreshToken;
-import com.group2.kahootclone.object.Response.authController.TokenResponse;
-import com.group2.kahootclone.object.ResponseObject;
+import com.group2.kahootclone.DTO.Response.authController.TokenResponse;
+import com.group2.kahootclone.DTO.ResponseObject;
 
 public interface IRefreshTokenService {
     ResponseObject<Boolean> verifyRefreshToken(String token);

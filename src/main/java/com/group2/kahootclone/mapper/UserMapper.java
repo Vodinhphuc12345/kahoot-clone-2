@@ -1,7 +1,7 @@
 package com.group2.kahootclone.mapper;
 
 import com.group2.kahootclone.model.auth.User;
-import com.group2.kahootclone.object.Request.authController.RegisterRequest;
+import com.group2.kahootclone.DTO.Request.authController.RegisterRequest;
 import org.mapstruct.*;
 
 @Mapper(componentModel = "spring")

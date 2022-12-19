@@ -1,14 +1,14 @@
 package com.group2.kahootclone.service.Interface;
 
-import com.group2.kahootclone.object.Request.authController.LoginRequest;
-import com.group2.kahootclone.object.Request.authController.PasswordConfirmationRequest;
-import com.group2.kahootclone.object.Request.authController.RegisterRequest;
-import com.group2.kahootclone.object.Response.authController.LoginResponse;
-import com.group2.kahootclone.object.Response.authController.PasswordConfirmationResponse;
-import com.group2.kahootclone.object.Response.authController.VerificationResponse;
-import com.group2.kahootclone.object.Response.groupController.KahootGroupResponse;
-import com.group2.kahootclone.object.Response.meController.UserResponse;
-import com.group2.kahootclone.object.ResponseObject;
+import com.group2.kahootclone.DTO.Request.authController.LoginRequest;
+import com.group2.kahootclone.DTO.Request.authController.PasswordConfirmationRequest;
+import com.group2.kahootclone.DTO.Request.authController.RegisterRequest;
+import com.group2.kahootclone.DTO.Response.authController.LoginResponse;
+import com.group2.kahootclone.DTO.Response.authController.PasswordConfirmationResponse;
+import com.group2.kahootclone.DTO.Response.authController.VerificationResponse;
+import com.group2.kahootclone.DTO.Response.groupController.KahootGroupResponse;
+import com.group2.kahootclone.DTO.Response.meController.UserResponse;
+import com.group2.kahootclone.DTO.ResponseObject;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.multipart.MultipartFile;
 

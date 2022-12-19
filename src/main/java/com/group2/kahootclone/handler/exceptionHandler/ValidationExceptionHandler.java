@@ -1,6 +1,6 @@
 package com.group2.kahootclone.handler.exceptionHandler;
 
-import com.group2.kahootclone.object.ResponseObject;
+import com.group2.kahootclone.DTO.ResponseObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

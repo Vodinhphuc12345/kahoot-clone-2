@@ -1,8 +1,8 @@
 package com.group2.kahootclone.controller;
 
-import com.group2.kahootclone.object.Request.slideController.SlideRequest;
-import com.group2.kahootclone.object.Response.slideController.SlideResponse;
-import com.group2.kahootclone.object.ResponseObject;
+import com.group2.kahootclone.DTO.Request.slideController.SlideRequest;
+import com.group2.kahootclone.DTO.Response.slideController.SlideResponse;
+import com.group2.kahootclone.DTO.ResponseObject;
 import com.group2.kahootclone.service.Interface.ISlideService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

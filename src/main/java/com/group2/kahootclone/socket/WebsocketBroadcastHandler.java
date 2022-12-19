@@ -111,7 +111,6 @@ public class WebsocketBroadcastHandler extends TextWebSocketHandler {
                     entry1.getValue().remove(session);
                 }
             }
-            throw new RuntimeException(e);
         }
     }
 

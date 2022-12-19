@@ -1,7 +1,7 @@
 package com.group2.kahootclone.Utils;
 
 import com.group2.kahootclone.constant.ErrorCodes;
-import com.group2.kahootclone.object.ResponseObject;
+import com.group2.kahootclone.DTO.ResponseObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
