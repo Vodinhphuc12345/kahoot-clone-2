@@ -40,6 +40,7 @@ public class KahootGroupResponse extends BaseResponse {
     }
 
     public static KahootGroupResponse fromKahootGroup(KahootGroup kahootGroup) {
+        if (kahootGroup == null) return null;
         KahootGroupResponse response = MapperUtil.INSTANCE.map(kahootGroup, KahootGroupResponse.class);
 
         List<UserKahootGroup> userKahootGroups = kahootGroup.getUserKahootGroups();

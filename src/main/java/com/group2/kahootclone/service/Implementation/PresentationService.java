@@ -143,9 +143,10 @@ public class PresentationService implements IPresentationService {
         return ret;
     }
 
+    @Transactional
     @Override
-    public ResponseObject<List<PresentationResponse>> getPresentingPresentationsOfGroup(int groupId) {
-        ResponseObject<List<PresentationResponse>> ret = new ResponseObject<>();
+    public ResponseObject<PresentationResponse> getPresentingPresentationsOfGroup(int groupId) {
+        ResponseObject<PresentationResponse> ret = new ResponseObject<>();
         try {
             //group
             Optional<KahootGroup> groupRet = groupRepository.findById(groupId);
@@ -157,10 +158,8 @@ public class PresentationService implements IPresentationService {
             }
 
             //delete presentation
-            List<PresentationResponse> list = group.getPresentingPresentations()
-                    .stream()
-                    .map(PresentationResponse::fromPresentation)
-                    .collect(Collectors.toList());
+            PresentationResponse list = PresentationResponse.fromPresentation(group.getPresentingPresentation());
+
             //build success
             ret.setObject(list);
         } catch (Exception exception) {
@@ -293,9 +292,9 @@ public class PresentationService implements IPresentationService {
 
             //start
             presentation.getSlides().get(0).setPresenting(true);
-            List<KahootGroup> presentingGroups = kahootGroupRepository.findAllById(startPresentationRequest.getGroupIds());
-            presentation.setPresentingGroups(presentingGroups);
-            presentation.getPresentedGroups().addAll(presentingGroups);
+            KahootGroup presentingGroup = kahootGroupRepository.findById(startPresentationRequest.getGroupId()).orElse(null);
+            presentation.setPresentingGroup(presentingGroup);
+            presentation.getPresentedGroups().add(presentingGroup);
             Presentation savedPresentation = presentationRepository.save(presentation);
             //get slides
             List<SlideResponse> list = savedPresentation.getSlides()
@@ -329,7 +328,7 @@ public class PresentationService implements IPresentationService {
             presentation.getSlides().forEach(slide -> {
                 slide.setPresenting(false);
             });
-            presentation.setPresentingGroups(null);
+            presentation.setPresentingGroup(null);
             Presentation savedPresentation = presentationRepository.save(presentation);
             //get slides
             List<SlideResponse> list = savedPresentation.getSlides()

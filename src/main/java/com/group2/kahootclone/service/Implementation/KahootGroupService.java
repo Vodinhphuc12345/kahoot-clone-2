@@ -127,6 +127,7 @@ public class KahootGroupService implements IKahootGroupService {
         return ret;
     }
 
+    @Transactional
     @Override
     public ResponseObject<KahootGroupResponse> getKahootGroup(int groupId) {
         ResponseObject<KahootGroupResponse> ret = new ResponseObject<>();
@@ -174,7 +175,7 @@ public class KahootGroupService implements IKahootGroupService {
             //delete role
             UserKahootGroup curUserKahootGroup = userKahootGroupRepository.findUserKahootGroupByUserAndKahootGroup(user, kahootGroup);
 
-            if (curUserKahootGroup.getRole().equals(OWNER.name())) {
+            if (curUserKahootGroup != null && curUserKahootGroup.getRole().equals(OWNER.name())) {
                 ret.setMessage("You can't assign role for yourself");
                 ret.setErrorCode(ErrorCodes.WRITE_FAILED);
                 return ret;
@@ -232,8 +233,8 @@ public class KahootGroupService implements IKahootGroupService {
 
     @Transactional
     @Override
-    public ResponseObject<List<KahootGroupResponse>> getPresentingGroupsOfPresentation(int presentationId) {
-        ResponseObject<List<KahootGroupResponse>> ret = new ResponseObject<>();
+    public ResponseObject<KahootGroupResponse> getPresentingGroupsOfPresentation(int presentationId) {
+        ResponseObject<KahootGroupResponse> ret = new ResponseObject<>();
         try {
             Presentation presentation = presentationRepository.findById(presentationId).orElse(null);
 
@@ -243,11 +244,9 @@ public class KahootGroupService implements IKahootGroupService {
                 return ret;
             }
 
-            List<KahootGroupResponse> kahootGroupResponses = presentation.getPresentingGroups().stream()
-                    .map(KahootGroupResponse::fromKahootGroup)
-                    .collect(Collectors.toList());
+            KahootGroupResponse kahootGroupResponse = KahootGroupResponse.fromKahootGroup(presentation.getPresentingGroup());
             //build success
-            ret.setObject(kahootGroupResponses);
+            ret.setObject(kahootGroupResponse);
         } catch (Exception exception) {
             log.error(exception.getMessage(), exception);
             ret.buildException(exception.getMessage());

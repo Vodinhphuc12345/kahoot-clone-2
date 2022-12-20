@@ -31,8 +31,9 @@ public class KahootGroup extends BaseModel {
     List<UserKahootGroup> userKahootGroups;
 
     //list presenting presentation
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "presentingGroups")
-    List<Presentation> presentingPresentations;
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "presentingGroup")
+
+    Presentation presentingPresentation;
 
     //list presented presentation
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "presentedGroups")
@@ -43,9 +44,6 @@ public class KahootGroup extends BaseModel {
     private void removePresentationFromGroup() {
         for (Presentation p : presentedPresentations) {
             p.getPresentedGroups().remove(this);
-        }
-        for (Presentation p : presentingPresentations) {
-            p.getPresentingGroups().remove(this);
         }
     }
 

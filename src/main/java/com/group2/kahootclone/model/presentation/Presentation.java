@@ -28,13 +28,9 @@ public class Presentation extends BaseModel {
     private User user;
 
     // presenting group
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
-    @JoinTable(
-            name = "presenting_presentation_groups",
-            joinColumns = @JoinColumn(name = "presentation_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "group_id", referencedColumnName = "id")
-    )
-    private List<KahootGroup> presentingGroups;
+    @OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
+    @JoinColumn(name = "kahoot_group_id")
+    private KahootGroup presentingGroup;
 
     // presented group
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)

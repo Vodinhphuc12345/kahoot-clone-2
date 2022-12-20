@@ -17,7 +17,7 @@ public interface IPresentationService {
 
     ResponseObject<List<PresentationResponse>> getPresentedPresentationsOfGroup(int groupId);
 
-    ResponseObject<List<PresentationResponse>> getPresentingPresentationsOfGroup(int groupId);
+    ResponseObject<PresentationResponse> getPresentingPresentationsOfGroup(int groupId);
 
     ResponseObject<List<PresentationResponse>> getPresentationsOfUser(int userId);
 

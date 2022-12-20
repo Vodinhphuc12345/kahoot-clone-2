@@ -3,10 +3,10 @@ package com.group2.kahootclone.socket.eventHandlers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.group2.kahootclone.DTO.Response.groupController.KahootGroupResponse;
 import com.group2.kahootclone.DTO.Response.presentationController.PresentationResponse;
-import com.group2.kahootclone.constant.socket.ClientType;
-import com.group2.kahootclone.constant.socket.message.ServerMessageType;
 import com.group2.kahootclone.DTO.Response.slideController.SlideResponse;
 import com.group2.kahootclone.DTO.ResponseObject;
+import com.group2.kahootclone.constant.socket.ClientType;
+import com.group2.kahootclone.constant.socket.message.ServerMessageType;
 import com.group2.kahootclone.service.Interface.IKahootGroupService;
 import com.group2.kahootclone.service.Interface.IPresentationService;
 import com.group2.kahootclone.service.Interface.ISlideService;
@@ -98,6 +98,16 @@ public class PresentationHandler {
 
     public void handleStartPresentation(WebSocketSession session, Map<String, Map<String, Set<WebSocketSession>>> roomMap, SocketRequest<PresentationRequest> startPresentationRequest) {
         try {
+            // end
+            ResponseObject<PresentationResponse> presentationRes = presentationService.getPresentingPresentationsOfGroup(startPresentationRequest.getMessage().getGroupId());
+            if (presentationRes.getObject() != null){
+                SocketRequest<PresentationRequest> tempSocketReq = SocketRequest.<PresentationRequest>builder()
+                        .metaData(com.group2.kahootclone.socket.Request.MetaData.builder().roomName(presentationRes.getObject().getRoomName()).build())
+                        .message(PresentationRequest.builder().presentationId(presentationRes.getObject().getId()).build())
+                        .build();
+                handleEndPresentation(session, roomMap, tempSocketReq);
+            }
+            //start
             ResponseObject<List<SlideResponse>> listSlideRes = presentationService.startPresentation(startPresentationRequest.getMessage());
             //send to presentation
             MetaData metaData = new MetaData();
@@ -124,7 +134,7 @@ public class PresentationHandler {
             }
 
             // send to groups
-            ResponseObject<List<KahootGroupResponse>> groupRes = kahootGroupService.getKahootGroups(startPresentationRequest.getMessage().getGroupIds());
+            ResponseObject<KahootGroupResponse> groupRes = kahootGroupService.getKahootGroup(startPresentationRequest.getMessage().getGroupId());
 
             MetaData metaDataForGroup = new MetaData();
             metaDataForGroup.setMessageType(ServerMessageType.PRESENTING_PRESENTATION_IN_GROUP);
@@ -135,18 +145,16 @@ public class PresentationHandler {
                     .build();
             String responseStrForGroup = new ObjectMapper().writeValueAsString(socketResponseForGroup);
             if (groupRes.getObject() != null) {
-                for (KahootGroupResponse kahootGroupResponse : groupRes.getObject()) {
-                    Map<String, Set<WebSocketSession>> subRoomMapOfGroup = roomMap.get(kahootGroupResponse.getRoomName());
-                    if (subRoomMapOfGroup != null) {
-                        if (subRoomMapOfGroup.get(ClientType.MEMBER.toString()) != null)
-                            for (WebSocketSession socketSession : subRoomMapOfGroup.get(ClientType.MEMBER.toString())) {
-                                socketSession.sendMessage(new TextMessage(responseStrForGroup));
-                            }
-                        if (subRoomMapOfGroup.get(ClientType.HOST.toString()) != null)
-                            for (WebSocketSession socketSession : subRoomMapOfGroup.get(ClientType.HOST.toString())) {
-                                socketSession.sendMessage(new TextMessage(responseStrForGroup));
-                            }
-                    }
+                Map<String, Set<WebSocketSession>> subRoomMapOfGroup = roomMap.get(groupRes.getObject().getRoomName());
+                if (subRoomMapOfGroup != null) {
+                    if (subRoomMapOfGroup.get(ClientType.MEMBER.toString()) != null)
+                        for (WebSocketSession socketSession : subRoomMapOfGroup.get(ClientType.MEMBER.toString())) {
+                            socketSession.sendMessage(new TextMessage(responseStrForGroup));
+                        }
+                    if (subRoomMapOfGroup.get(ClientType.HOST.toString()) != null)
+                        for (WebSocketSession socketSession : subRoomMapOfGroup.get(ClientType.HOST.toString())) {
+                            socketSession.sendMessage(new TextMessage(responseStrForGroup));
+                        }
                 }
             }
         } catch (Exception exception) {
@@ -154,9 +162,10 @@ public class PresentationHandler {
         }
     }
 
+
     public void handleEndPresentation(WebSocketSession session, Map<String, Map<String, Set<WebSocketSession>>> roomMap, SocketRequest<PresentationRequest> endPresentationRequest) {
         try {
-            ResponseObject<List<KahootGroupResponse>> groupRes = kahootGroupService.getPresentingGroupsOfPresentation
+            ResponseObject<KahootGroupResponse> groupRes = kahootGroupService.getPresentingGroupsOfPresentation
                     (endPresentationRequest.getMessage().getPresentationId());
 
             ResponseObject<List<SlideResponse>> listSlideRes = presentationService.endPresentation(endPresentationRequest.getMessage().getPresentationId());
@@ -195,18 +204,16 @@ public class PresentationHandler {
                     .build();
             String responseStrForGroup = new ObjectMapper().writeValueAsString(socketResponseForGroup);
             if (groupRes.getObject() != null) {
-                for (KahootGroupResponse kahootGroupResponse : groupRes.getObject()) {
-                    Map<String, Set<WebSocketSession>> subRoomMapOfGroup = roomMap.get(kahootGroupResponse.getRoomName());
-                    if (subRoomMapOfGroup != null) {
-                        if (subRoomMapOfGroup.get(ClientType.MEMBER.toString()) != null)
-                            for (WebSocketSession socketSession : subRoomMapOfGroup.get(ClientType.MEMBER.toString())) {
-                                socketSession.sendMessage(new TextMessage(responseStrForGroup));
-                            }
-                        if (subRoomMapOfGroup.get(ClientType.HOST.toString()) != null)
-                            for (WebSocketSession socketSession : subRoomMapOfGroup.get(ClientType.HOST.toString())) {
-                                socketSession.sendMessage(new TextMessage(responseStrForGroup));
-                            }
-                    }
+                Map<String, Set<WebSocketSession>> subRoomMapOfGroup = roomMap.get(groupRes.getObject().getRoomName());
+                if (subRoomMapOfGroup != null) {
+                    if (subRoomMapOfGroup.get(ClientType.MEMBER.toString()) != null)
+                        for (WebSocketSession socketSession : subRoomMapOfGroup.get(ClientType.MEMBER.toString())) {
+                            socketSession.sendMessage(new TextMessage(responseStrForGroup));
+                        }
+                    if (subRoomMapOfGroup.get(ClientType.HOST.toString()) != null)
+                        for (WebSocketSession socketSession : subRoomMapOfGroup.get(ClientType.HOST.toString())) {
+                            socketSession.sendMessage(new TextMessage(responseStrForGroup));
+                        }
                 }
             }
         } catch (Exception exception) {

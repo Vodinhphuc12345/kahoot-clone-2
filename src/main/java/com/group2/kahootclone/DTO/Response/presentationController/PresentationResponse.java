@@ -23,6 +23,7 @@ public class PresentationResponse extends BaseResponse {
 
 
     public static PresentationResponse fromPresentation(Presentation presentation) {
+        if (presentation == null) return null;
         PresentationResponse response = MapperUtil.INSTANCE.map(presentation, PresentationResponse.class);
         response.setOwner(UserResponse.fromUser(presentation.getUser()));
         Link link = linkTo(methodOn(PresentationController.class).getPresentation(presentation.getId())).withSelfRel();

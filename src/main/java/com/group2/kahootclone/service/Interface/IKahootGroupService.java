@@ -21,7 +21,7 @@ public interface IKahootGroupService {
 
     ResponseObject<List<UserResponse>> getListUsersOfKahootGroup(int groupId);
 
-    ResponseObject<List<KahootGroupResponse>> getPresentingGroupsOfPresentation(int presentationId);
+    ResponseObject<KahootGroupResponse> getPresentingGroupsOfPresentation(int presentationId);
 
     ResponseObject<List<KahootGroupResponse>> getKahootGroups(List<Integer> groupIds);
 }

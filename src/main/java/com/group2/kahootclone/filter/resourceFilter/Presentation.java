@@ -58,29 +58,23 @@ public class Presentation {
 
     public boolean isSupporter(Authentication authentication, int presentationId) {
         com.group2.kahootclone.model.presentation.Presentation presentation = getPresentation(presentationId);
-        if (presentation == null || presentation.getPresentingGroups() == null || presentation.getPresentingGroups().isEmpty())
+        if (presentation == null || presentation.getPresentingGroup() == null)
             return false;
         int userId = (int) authentication.getPrincipal();
 
-        for (KahootGroup kahootGroup : presentation.getPresentingGroups()) {
-            UserKahootGroup userKahootGroup = getUserKahootGroup(userId, kahootGroup.getId());
-            if (userKahootGroup.getRole().equals(OWNER.name()) || userKahootGroup.getRole().equals(CO_OWNER.name()))
-                return true;
-        }
-        return false;
+        KahootGroup kahootGroup = presentation.getPresentingGroup();
+        UserKahootGroup userKahootGroup = getUserKahootGroup(userId, kahootGroup.getId());
+        return userKahootGroup.getRole().equals(OWNER.name()) || userKahootGroup.getRole().equals(CO_OWNER.name());
     }
 
     public boolean isParticipant(Authentication authentication, int presentationId) {
         com.group2.kahootclone.model.presentation.Presentation presentation = getPresentation(presentationId);
         if (presentation == null) return false;
-        if (presentation.getPresentingGroups() == null || presentation.getPresentingGroups().isEmpty()) return true;
+        if (presentation.getPresentingGroup() == null) return true;
         int userId = (int) authentication.getPrincipal();
 
-        for (KahootGroup kahootGroup : presentation.getPresentingGroups()) {
-            UserKahootGroup userKahootGroup = getUserKahootGroup(userId, kahootGroup.getId());
-            if (userKahootGroup != null)
-                return true;
-        }
-        return false;
+        KahootGroup kahootGroup = presentation.getPresentingGroup();
+        UserKahootGroup userKahootGroup = getUserKahootGroup(userId, kahootGroup.getId());
+        return userKahootGroup != null;
     }
 }

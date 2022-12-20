@@ -13,5 +13,5 @@ import java.util.List;
 @Builder
 public class PresentationRequest {
     int presentationId;
-    List<Integer> groupIds;
+    int groupId;
 }
