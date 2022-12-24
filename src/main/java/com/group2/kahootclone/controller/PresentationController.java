@@ -14,6 +14,9 @@ import com.group2.kahootclone.service.Interface.IPresentationService;
 import com.group2.kahootclone.service.Interface.IQuestionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -21,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -108,8 +112,11 @@ public class PresentationController {
             "or @presentationRole.isCollaborator(authentication, #presentationId)" +
             "or @presentationRole.isParticipant(authentication, #presentationId)")
     @GetMapping("/{presentationId}/chat")
-    public ResponseEntity<ResponseObject<List<ChatResponse>>> getChatOfPresentation(@PathVariable int presentationId) {
-        ResponseObject<List<ChatResponse>> listChatRet = chatService.getChatOfPresentation(presentationId);
+    public ResponseEntity<ResponseObject<List<ChatResponse>>> getChatOfPresentation(@PathVariable int presentationId,
+                                                                                    @RequestParam (required = false,
+                                                                                    defaultValue = "0")
+                                                                                    int fromChat) {
+        ResponseObject<List<ChatResponse>> listChatRet = chatService.getChatOfPresentation(presentationId, fromChat);
         return listChatRet.createResponse();
     }
 

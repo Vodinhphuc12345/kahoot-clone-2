@@ -12,9 +12,13 @@ import com.group2.kahootclone.service.Interface.IChatService;
 import com.group2.kahootclone.socket.Request.chatHandler.ChatRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,9 +32,10 @@ public class ChatService implements IChatService {
     ChatRepository chatRepository;
     @Autowired
     UserRepository userRepository;
+
     @Transactional
     @Override
-    public ResponseObject<List<ChatResponse>> getChatOfPresentation(int presentationId) {
+    public ResponseObject<List<ChatResponse>> getChatOfPresentation(int presentationId, int fromChatId) {
         ResponseObject<List<ChatResponse>> ret = new ResponseObject<>();
         try {
             //group
@@ -42,10 +47,19 @@ public class ChatService implements IChatService {
                 return ret;
             }
             //get chats
-            List<ChatResponse> list = presentation.getChats()
+            Pageable pageRequest = PageRequest.of(0, 10, Sort.by("id").descending());
+            List<Chat> chats;
+            if (fromChatId != 0){
+                chats = chatRepository.findAllByPresentationIdAndIdLessThan(presentationId, fromChatId, pageRequest);
+            } else {
+                chats = chatRepository.findAllByPresentationId(presentationId, pageRequest);
+            }
+
+            List<ChatResponse> list = chats
                     .stream()
                     .map(ChatResponse::fromChat)
                     .collect(Collectors.toList());
+            Collections.reverse(list);
             //build success
             ret.setObject(list);
         } catch (Exception exception) {
